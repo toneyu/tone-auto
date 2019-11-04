@@ -12,3 +12,13 @@
 .container a {
   font-size: 1.4rem;
 }
+
+.cmds {
+  display: flex;
+  flex-direction: column;
+}
+
+.scripts {
+  display: flex;
+  flex-direction: column;
+}

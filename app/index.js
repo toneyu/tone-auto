@@ -10,8 +10,9 @@ const store = configureStore();
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
 render(
+  // eslint-disable-next-line react/jsx-filename-extension
   <AppContainer>
     <Root store={store} history={history} />
   </AppContainer>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
