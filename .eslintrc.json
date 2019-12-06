@@ -13,6 +13,10 @@
     "promise/always-return": "off",
     "react/prop-types": "off",
     "import/no-extraneous-dependencies": "off",
-    "flowtype/delimiter-dangle": "off"
+    "flowtype/delimiter-dangle": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "import/no-named-as-default-member": "off",
+    "react/destructuring-assignment": "off",
+    "no-shadow": "off"
   }
 }
