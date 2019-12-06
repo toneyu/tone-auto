@@ -3,7 +3,7 @@ import * as jsxapi from 'jsxapi';
 export default (
   onClose,
   { host, password } = {
-    host: '10.12.15.158',
+    host: '10.12.97.204',
     password: 'fabC711',
   },
 ) =>
