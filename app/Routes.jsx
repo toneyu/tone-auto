@@ -9,9 +9,11 @@ import ScriptsPage from './containers/ScriptsPage';
 import ConnectionsPage from './containers/ConnectionPage';
 import ConnectedRoute from './ConnectedRoute';
 import Status from './containers/Status';
+import AccentureLogo from './assets/accenture.png';
 
 const Routes = () => (
   <App>
+    <img src={AccentureLogo} height={50} alt="accenture-logo" />
     <Status />
     <TabsContainer />
     <Switch>
