@@ -7,6 +7,7 @@ import {
   DISCONNECT_REQUEST,
   connectSuccess,
   disconnectSuccess,
+  DISCONNECT_SUCCESS,
 } from '../actions/connection';
 import {
   SCRIPT_1_REQUEST,
@@ -76,10 +77,11 @@ export default function* messagesWatcher() {
 
       const scripts = yield fork(xapiWatcher, xapi);
 
-      const { requestAction } = yield race({
+      const { requestAction, disconnected } = yield race({
         listeners: all([call(receiveMessagesWatcher, xapiChannel)]),
         close: take(DISCONNECT_REQUEST),
         requestAction: take(CONNECT_REQUEST),
+        disconnected: take(DISCONNECT_SUCCESS),
       });
 
       requestedNewWhileConnected = requestAction !== undefined;
@@ -88,8 +90,12 @@ export default function* messagesWatcher() {
       }
 
       yield cancel(scripts);
+      yield xapi.close();
 
       yield xapiChannel.close();
+      if (!disconnected) {
+        yield put(disconnectSuccess());
+      }
     } catch (e) {
       console.error(e.message);
     }
