@@ -10,10 +10,14 @@ import ConnectionsPage from './containers/ConnectionPage';
 import ConnectedRoute from './ConnectedRoute';
 import Status from './containers/Status';
 import AccentureLogo from './assets/accenture.png';
+import Minecraft from './assets/minecraft.jpg';
 
 const Routes = () => (
   <App>
-    <img src={AccentureLogo} height={50} alt="accenture-logo" />
+    <div style={{ display: 'flex', width: '100%' }}>
+      <img src={AccentureLogo} height={50} alt="accenture-logo" />
+      <img src={Minecraft} height={50} style={{ marginLeft: 'auto' }} alt="accenture-logo" />
+    </div>
     <Status />
     <TabsContainer />
     <Switch>
