@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab, CircularProgress } from '@material-ui/core';
+import { Tabs, Tab, CircularProgress, Tooltip } from '@material-ui/core';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
 import WifiIcon from '@material-ui/icons/Wifi';
 import { push } from 'connected-react-router';
@@ -11,6 +11,15 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import routes from '../constants/routes';
 import ConnectionStatus from '../constants/connection-status';
 
+function ConnectedTab({ connected, ...tabProps }) {
+  return (
+    <Tooltip title={!connected ? 'Please connect first.' : ''}>
+      <div>
+        <Tab {...tabProps} disabled={!connected} color={connected ? 'primary' : 'disabled'} />
+      </div>
+    </Tooltip>
+  );
+}
 const TabsContainer = ({ pathname, push, connectionStatus }) => {
   const connected = connectionStatus === ConnectionStatus.CONNECTED;
 
@@ -37,19 +46,18 @@ const TabsContainer = ({ pathname, push, connectionStatus }) => {
           label="Connect"
           value={routes.CONNECTIONS}
         />
-        <Tab
+
+        <ConnectedTab
           icon={<AppsIcon />}
           label="Commands"
-          color={connected ? 'primary' : 'disabled'}
           value={routes.COMMANDS}
-          disabled={!connected}
+          connected={connected}
         />
-        <Tab
+        <ConnectedTab
           icon={<FormatListNumberedIcon />}
           label="Scripts"
           value={routes.SCRIPTS}
-          color={connected ? 'primary' : 'disabled'}
-          disabled={!connected}
+          connected={connected}
         />
       </Tabs>
     </Paper>
