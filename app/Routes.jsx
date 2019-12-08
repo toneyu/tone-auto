@@ -8,9 +8,11 @@ import CommandsPage from './containers/HomePage';
 import ScriptsPage from './containers/ScriptsPage';
 import ConnectionsPage from './containers/ConnectionPage';
 import ConnectedRoute from './ConnectedRoute';
+import Status from './containers/Status';
 
 const Routes = () => (
   <App>
+    <Status />
     <TabsContainer />
     <Switch>
       <ConnectedRoute path={routes.SCRIPTS} component={ScriptsPage} />
