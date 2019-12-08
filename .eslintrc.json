@@ -17,6 +17,7 @@
     "react/jsx-one-expression-per-line": "off",
     "import/no-named-as-default-member": "off",
     "react/destructuring-assignment": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "react/jsx-curly-newline": "off"
   }
 }

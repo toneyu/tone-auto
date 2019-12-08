@@ -7,20 +7,17 @@ import routes from './constants/routes';
 import CommandsPage from './containers/HomePage';
 import ScriptsPage from './containers/ScriptsPage';
 import ConnectionsPage from './containers/ConnectionPage';
+import ConnectedRoute from './ConnectedRoute';
 
 const Routes = () => (
   <App>
     <TabsContainer />
     <Switch>
-      <Route path={routes.SCRIPTS}>
-        <ScriptsPage />
-      </Route>
+      <ConnectedRoute path={routes.SCRIPTS} component={ScriptsPage} />
       <Route path={routes.CONNECTIONS}>
         <ConnectionsPage />
       </Route>
-      <Route path={routes.COMMANDS}>
-        <CommandsPage />
-      </Route>
+      <ConnectedRoute path={routes.COMMANDS} component={CommandsPage} />
       <Redirect to={routes.CONNECTIONS} />
     </Switch>
   </App>
