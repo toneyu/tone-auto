@@ -1,6 +1,7 @@
 import React from 'react';
-import { Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab, CircularProgress } from '@material-ui/core';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
+import WifiIcon from '@material-ui/icons/Wifi';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
@@ -18,7 +19,19 @@ const TabsContainer = ({ pathname, push, connectionStatus }) => (
       aria-label="disabled tabs example"
       onChange={(_, value) => push(value)}
     >
-      <Tab icon={<WifiOffIcon />} label="Connect" value={routes.CONNECTIONS} />
+      <Tab
+        icon={
+          connectionStatus === ConnectionStatus.CONNECTED ? (
+            <WifiIcon color="primary" />
+          ) : connectionStatus === ConnectionStatus.CONNECTING ? (
+            <CircularProgress />
+          ) : (
+            <WifiOffIcon color="error" />
+          )
+        }
+        label="Connect"
+        value={routes.CONNECTIONS}
+      />
       <Tab
         icon={<WifiOffIcon />}
         label="Commands"
