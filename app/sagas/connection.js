@@ -59,9 +59,15 @@ export function* xapiWatcher(xapi) {
 }
 
 export default function* messagesWatcher() {
+  let requestedNewWhileConnected = false;
+  let host;
+  let password;
   while (true) {
     try {
-      const { host, password } = yield take(CONNECT_REQUEST);
+      if (!requestedNewWhileConnected) {
+        ({ host, password } = yield take(CONNECT_REQUEST));
+      }
+
       const xapi = jsxapi.connect(`ssh://${host}`, {
         username: 'admin',
         password,
@@ -71,10 +77,16 @@ export default function* messagesWatcher() {
 
       const scripts = yield fork(xapiWatcher, xapi);
 
-      yield race({
+      const { requestAction } = yield race({
         listeners: all([call(receiveMessagesWatcher, xapiChannel)]),
         close: take(DISCONNECT_REQUEST),
+        requestAction: take(CONNECT_REQUEST),
       });
+
+      requestedNewWhileConnected = requestAction !== undefined;
+      if (requestedNewWhileConnected) {
+        ({ host, password } = requestAction);
+      }
 
       yield cancel(scripts);
 
