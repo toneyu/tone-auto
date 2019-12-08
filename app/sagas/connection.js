@@ -72,7 +72,6 @@ export default function* messagesWatcher() {
         username: 'admin',
         password,
       });
-
       const xapiChannel = yield call(createXapiChannel, xapi);
 
       const scripts = yield fork(xapiWatcher, xapi);
