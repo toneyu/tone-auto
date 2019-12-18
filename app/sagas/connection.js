@@ -8,6 +8,7 @@ import {
   connectSuccess,
   disconnectSuccess,
   DISCONNECT_SUCCESS,
+  connectFailure,
 } from '../actions/connection';
 import {
   SCRIPT_1_REQUEST,
@@ -15,9 +16,15 @@ import {
   SCRIPT_3_REQUEST,
   SCRIPT_4_REQUEST,
 } from '../actions/scripts';
-import { COMMAND_REQUEST, STATUS_SET_REQUEST, CONFIG_SET_REQUEST } from '../actions/xapi';
+import {
+  COMMAND_REQUEST,
+  STATUS_SET_REQUEST,
+  CONFIG_SET_REQUEST,
+  STATUS_GET_REQUEST,
+  CONFIG_GET_REQUEST,
+} from '../actions/xapi';
 import { script1Saga, script2Saga, script3Saga, script4Saga } from './scripts';
-import { commandSaga, statusSetSaga, configSetSaga } from './xapi';
+import { commandSaga, statusSetSaga, configSetSaga, configGetSaga, statusGetSaga } from './xapi';
 
 export function createXapiChannel(xapi) {
   return eventChannel((emit) => {
@@ -55,7 +62,9 @@ export function* xapiWatcher(xapi) {
   yield takeLeading(SCRIPT_4_REQUEST, script4Saga, xapi);
 
   yield takeLeading(COMMAND_REQUEST, commandSaga, xapi);
+  yield takeLeading(STATUS_GET_REQUEST, statusGetSaga, xapi);
   yield takeLeading(STATUS_SET_REQUEST, statusSetSaga, xapi);
+  yield takeLeading(CONFIG_GET_REQUEST, configGetSaga, xapi);
   yield takeLeading(CONFIG_SET_REQUEST, configSetSaga, xapi);
 }
 
@@ -69,7 +78,7 @@ export default function* messagesWatcher() {
         ({ host, password } = yield take(CONNECT_REQUEST));
       }
 
-      const xapi = jsxapi.connect(`ssh://${host}`, {
+      const xapi = jsxapi.connect(`wss://${host}`, {
         username: 'admin',
         password,
       });
@@ -98,6 +107,7 @@ export default function* messagesWatcher() {
       }
     } catch (e) {
       console.error(e.message);
+      yield put(connectFailure(e));
     }
   }
 }

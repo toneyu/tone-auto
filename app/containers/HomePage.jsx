@@ -1,81 +1,80 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styles from './App.css';
-import xapi from '../actions/xapi';
+import {
+  commandRequest,
+  statusGetRequest,
+  statusSetRequest,
+  configSetRequest,
+  configGetRequest,
+} from '../actions/xapi';
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   cmdRef = React.createRef();
 
   // Custom Buttons
   handleMuteClick = () => {
-    xapi.command('Audio Microphones Mute');
+    this.props.command('Audio Microphones Mute');
   };
 
   handleUnmuteClick = () => {
-    xapi.command('Audio Microphones Unmute');
+    this.props.command('Audio Microphones Unmute');
   };
 
   handleGetMuteClick = () => {
-    xapi.status.get('Audio Microphones Mute').then((mute) => {
-      console.log(`mute is: ${mute}`);
-    });
+    this.props.statusGet('Audio Microphones Mute');
   };
 
   handleSelfModeOn = () => {
-    xapi.config.set('Video Selfview Default Mode', 'On');
+    this.props.configSet('Video Selfview Default Mode', 'On');
   };
 
   handleSelfModeOff = () => {
-    xapi.config.set('Video Selfview Default Mode', 'Off');
+    this.props.configSet('Video Selfview Default Mode', 'Off');
   };
 
   handleGetSelfModeStatus = () => {
-    xapi.config.get('Video Selfview Default Mode').then((selfview) => {
-      console.log(`selfview is: ${selfview}`);
-    });
+    this.props.configGet('Video Selfview Default Mode');
   };
 
   handleDoNotDisturbOn = () => {
-    xapi.command('Conference DoNotDisturb Activate');
+    this.props.command('Conference DoNotDisturb Activate');
   };
 
   handleDoNotDisturbOff = () => {
-    xapi.command('Conference DoNotDisturb Deactivate');
+    this.props.command('Conference DoNotDisturb Deactivate');
   };
 
   handleDoNotDisturbStatus = () => {
-    xapi.status.get('Conference DoNotDisturb').then((status) => {
-      console.log(`Do Not Disturb Status is: ${status}`);
-    });
+    this.props.statusGet('Conference DoNotDisturb');
   };
 
   handleCallResume = () => {
-    xapi.command('Call Resume');
+    this.props.command('Call Resume');
   };
 
   handleCallHold = () => {
-    xapi.command('Call Hold');
+    this.props.command('Call Hold');
   };
 
   handleCallStatus = () => {
-    xapi.status.get('Call').then((status) => {
-      console.log(`Call Status is: ${status}`);
-    });
+    this.props.statusGet('Call');
   };
 
   handleDialOne = () => {
-    xapi.command('Dial', { Number: '1' });
+    this.props.command('Dial', { Number: '1' });
   };
 
   handleDialTwo = () => {
-    xapi.command('Dial', { Number: '2' });
+    this.props.command('Dial', { Number: '2' });
   };
 
   handleDialX = () => {
-    xapi.command('Dial', { Number: '917039480488' });
+    this.props.command('Dial', { Number: '917039480488' });
   };
 
   handleCallDisconnect = () => {
-    xapi.command('Call Disconnect');
+    this.props.command('Call Disconnect');
   };
 
   render() {
@@ -141,3 +140,18 @@ export default class HomePage extends Component {
     );
   }
 }
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = {
+  command: commandRequest,
+  statusGet: statusGetRequest,
+  statusSet: statusSetRequest,
+  configGet: configGetRequest,
+  configSet: configSetRequest,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomePage);
