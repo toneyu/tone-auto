@@ -6,9 +6,13 @@ import {
   configSetFailure,
   statusSetSuccess,
   statusSetFailure,
+  configGetSuccess,
+  configGetFailure,
+  statusGetFailure,
+  statusGetSuccess,
 } from '../actions/xapi';
 
-export function* commandSaga(xapi, args) {
+export function* commandSaga(xapi, { args }) {
   try {
     const response = yield xapi.command(...args);
     console.log(response);
@@ -19,7 +23,29 @@ export function* commandSaga(xapi, args) {
   }
 }
 
-export function* configSetSaga(xapi, args) {
+export function* configGetSaga(xapi, { args }) {
+  try {
+    const response = yield xapi.config.get(...args);
+    console.log(response);
+
+    yield put(configGetSuccess(response));
+  } catch (e) {
+    yield put(configGetFailure(e));
+  }
+}
+
+export function* statusGetSaga(xapi, { args }) {
+  try {
+    const response = yield xapi.status.get(...args);
+    console.log(response);
+
+    yield put(statusGetSuccess(response));
+  } catch (e) {
+    yield put(statusGetFailure(e));
+  }
+}
+
+export function* configSetSaga(xapi, { args }) {
   try {
     const response = yield xapi.config.set(...args);
     console.log(response);
@@ -30,9 +56,9 @@ export function* configSetSaga(xapi, args) {
   }
 }
 
-export function* statusSetSaga(xapi, args) {
+export function* statusSetSaga(xapi, { args }) {
   try {
-    const response = yield xapi.config.set(...args);
+    const response = yield xapi.status.set(...args);
     console.log(response);
 
     yield put(statusSetSuccess(response));

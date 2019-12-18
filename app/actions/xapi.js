@@ -27,13 +27,24 @@ export const commandSuccess = () => ({
   type: COMMAND_SUCCESS,
 });
 
-export const commandFailure = () => ({
+export const commandFailure = (error) => ({
   type: COMMAND_FAILURE,
+  error,
 });
 
 export const statusGetRequest = (...args) => ({
   type: STATUS_GET_REQUEST,
   args,
+});
+
+export const statusGetSuccess = (...args) => ({
+  type: STATUS_GET_SUCCESS,
+  args,
+});
+
+export const statusGetFailure = (error) => ({
+  type: STATUS_GET_FAILURE,
+  error,
 });
 
 export const statusSetRequest = (...args) => ({
@@ -46,9 +57,9 @@ export const statusSetSuccess = (...args) => ({
   args,
 });
 
-export const statusSetFailure = (...args) => ({
+export const statusSetFailure = (error) => ({
   type: STATUS_SET_FAILURE,
-  args,
+  error,
 });
 
 export const configSetRequest = (...args) => ({
@@ -61,9 +72,9 @@ export const configSetSuccess = (...args) => ({
   args,
 });
 
-export const configSetFailure = (...args) => ({
+export const configSetFailure = (error) => ({
   type: CONFIG_SET_FAILURE,
-  args,
+  error,
 });
 
 export const configGetRequest = (...args) => ({
@@ -76,18 +87,7 @@ export const configGetSuccess = (...args) => ({
   args,
 });
 
-export const configGetFailure = (...args) => ({
+export const configGetFailure = (error) => ({
   type: CONFIG_GET_FAILURE,
-  args,
+  error,
 });
-
-export default {
-  command: commandRequest,
-  status: {
-    get: statusGetRequest,
-  },
-  config: {
-    get: configGetRequest,
-    set: configSetRequest,
-  },
-};
