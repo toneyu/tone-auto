@@ -14,7 +14,14 @@ class DialPage extends React.Component {
     const { command } = this.props;
     return (
       <Paper>
-        <form noValidate autoComplete="off">
+        <form
+          noValidate
+          autoComplete="off"
+          onSubmit={(e) => {
+            e.preventDefault();
+            command('Dial', { Number: this.state.number });
+          }}
+        >
           <TextField
             id="outlined-basic"
             label="Phone Number"
@@ -22,7 +29,9 @@ class DialPage extends React.Component {
             onChange={(e) => this.setState({ number: e.target.value })}
             value={this.state.number}
           />
-          <Button onClick={() => command('Dial', { Number: this.state.number })}>Dial</Button>
+          <Button type="submit" variant="contained" color="primary">
+            Dial
+          </Button>
         </form>
       </Paper>
     );
