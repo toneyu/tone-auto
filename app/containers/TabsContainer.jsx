@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, Tab, CircularProgress, Tooltip } from '@material-ui/core';
 import WifiOffIcon from '@material-ui/icons/WifiOff';
 import WifiIcon from '@material-ui/icons/Wifi';
+import PhoneIcon from '@material-ui/icons/Phone';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
@@ -59,6 +60,7 @@ const TabsContainer = ({ pathname, push, connectionStatus }) => {
           value={routes.SCRIPTS}
           connected={connected}
         />
+        <ConnectedTab icon={<PhoneIcon />} label="Dial" value={routes.DIAL} connected={connected} />
       </Tabs>
     </Paper>
   );

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router';
-
-import App from './containers/App';
-import TabsContainer from './containers/TabsContainer';
-import routes from './constants/routes';
-import CommandsPage from './containers/HomePage';
-import ScriptsPage from './containers/ScriptsPage';
-import ConnectionsPage from './containers/ConnectionPage';
-import ConnectedRoute from './ConnectedRoute';
-import Status from './containers/Status';
+import { Redirect, Route, Switch } from 'react-router';
 import AccentureLogo from './assets/accenture.png';
 import Minecraft from './assets/minecraft.jpg';
+import ConnectedRoute from './ConnectedRoute';
+import routes from './constants/routes';
+import App from './containers/App';
+import ConnectionsPage from './containers/ConnectionPage';
+import DialPage from './containers/DialPage';
+import CommandsPage from './containers/HomePage';
+import ScriptsPage from './containers/ScriptsPage';
+import Status from './containers/Status';
+import TabsContainer from './containers/TabsContainer';
 
 const Routes = () => (
   <App>
@@ -26,6 +26,7 @@ const Routes = () => (
         <ConnectionsPage />
       </Route>
       <ConnectedRoute path={routes.COMMANDS} component={CommandsPage} />
+      <ConnectedRoute path={routes.DIAL} component={DialPage} />
       <Redirect to={routes.CONNECTIONS} />
     </Switch>
   </App>

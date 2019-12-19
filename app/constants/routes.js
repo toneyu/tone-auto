@@ -3,4 +3,5 @@ export default {
   CONNECTIONS: '/connections',
   COMMANDS: '/commands',
   SCRIPTS: '/scripts',
+  DIAL: '/dial',
 };
