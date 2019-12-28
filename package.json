@@ -271,9 +271,11 @@
     "electron-debug": "^2.1.0",
     "electron-log": "^3.0.4",
     "electron-updater": "^4.0.6",
+    "grommet": "^2.9.0",
     "history": "^4.9.0",
     "jsxapi": "^4.5.0",
     "papaparse": "^5.1.0",
+    "polished": "^3.4.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.2",
@@ -285,7 +287,7 @@
     "redux-thunk": "^2.3.0",
     "source-map-support": "^0.5.11",
     "ssh2": "^0.8.5",
-    "styled-components": "^4.4.0",
+    "styled-components": "^4.4.1",
     "typeface-roboto": "0.0.75"
   },
   "optionalDependencies": {

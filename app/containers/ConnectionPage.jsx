@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './App.css';
 import xcom from '../assets/xcom.csv';
 import { connectRequest, disconnectRequest } from '../actions/connection';
 import ConnectionStatus from '../constants/connection-status';
@@ -14,14 +13,14 @@ class ConnectionPage extends Component {
     const { connectionStatus } = this.props;
     return (
       <div>
-        <div className={styles.connections}>
+        <div>
           {connectionStatus === ConnectionStatus.CONNECTED && (
             <button className="btn btn-danger" onClick={() => this.props.disconnectRequest()}>
               Disconnect
             </button>
           )}
           {xcom.map((row) => (
-            <div className={styles.ip} key={row.host}>
+            <div key={row.host}>
               <button
                 className="btn btn-primary"
                 onClick={this.handleConnectClick(row)}

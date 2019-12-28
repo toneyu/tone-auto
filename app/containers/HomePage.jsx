@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './App.css';
 import {
   commandRequest,
   statusGetRequest,
@@ -83,7 +82,7 @@ class HomePage extends Component {
         {/* <Link to={routes.SCRIPTS}>
           <div className={styles.link}>Scripts</div>
         </Link> */}
-        <div className={styles.cmds}>
+        <div>
           <button className="btn btn-danger" onClick={this.handleDisconnect}>
             Disconnect
           </button>

@@ -1,7 +1,6 @@
 // import React, { Component } from 'react';
 import React from 'react';
 import { connect } from 'react-redux';
-import styles from './App.css';
 import { script1Request, script2Request, script3Request, script4Request } from '../actions/scripts';
 
 class ScriptsPage extends React.Component {
@@ -9,7 +8,7 @@ class ScriptsPage extends React.Component {
     const { script1Request, script2Request, script3Request, script4Request } = this.props;
     return (
       <div>
-        <div className={styles.scripts}>
+        <div>
           {/* <button className="btn btn-danger" onClick={this.handlelDisconnect}>
             Disconnect
           </button> */}

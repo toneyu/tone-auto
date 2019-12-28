@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import styles from './App.css';
 import routes from '../constants/routes';
 import xcom from '../assets/xcom.csv';
 import { script1Request, script2Request, script3Request, script4Request } from '../actions/scripts';
@@ -26,13 +25,13 @@ class ScriptsPage extends React.Component {
   render() {
     const { status } = this.state;
     return (
-      <div className={styles.container}>
+      <div>
         {status === STATUS.CONNECTED ? (
           <>
             <Link to={routes.HOME}>
-              <div className={styles.link}>Custom Buttons</div>
+              <div>Custom Buttons</div>
             </Link>
-            <div className={styles.scripts}>
+            <div>
               <button className="btn btn-danger" onClick={this.handlelDisconnect}>
                 Disconnect
               </button>
@@ -57,7 +56,7 @@ class ScriptsPage extends React.Component {
         ) : (
           <>
             {xcom.map((row) => (
-              <div className={styles.ip}>
+              <div>
                 <button className="btn btn-primary" onClick={this.connect(row)}>
                   Connect to {row.host}
                 </button>
