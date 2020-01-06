@@ -1,50 +1,44 @@
-import React, { Component } from 'react';
+import { Accordion } from 'grommet';
+import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import xcom from '../assets/xcom.csv';
-import { connectRequest, disconnectRequest } from '../actions/connection';
-import ConnectionStatus from '../constants/connection-status';
+import { disconnectRequest } from '../actions/connection';
+import ConnectionPanel from './ConnectionPanel';
 
-class ConnectionPage extends Component {
-  handleConnectClick = (row) => () => {
-    this.props.connectRequest(row.host, row.password);
+const ConnectionPage = ({ connections }) => {
+  const [activePanels, setActivePanels] = useState(new Set());
+
+  const removeActivePanel = (index) => {
+    activePanels.delete(index);
+    setActivePanels(new Set(activePanels));
   };
 
-  render() {
-    const { connectionStatus } = this.props;
-    return (
-      <div>
-        <div>
-          {connectionStatus === ConnectionStatus.CONNECTED && (
-            <button className="btn btn-danger" onClick={() => this.props.disconnectRequest()}>
-              Disconnect
-            </button>
-          )}
-          {xcom.map((row) => (
-            <div key={row.host}>
-              <button
-                className="btn btn-primary"
-                onClick={this.handleConnectClick(row)}
-                disabled={
-                  connectionStatus === ConnectionStatus.CONNECTING ||
-                  connectionStatus === ConnectionStatus.DISCONNECTING
-                }
-              >
-                Connect to {row.host}
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-}
+  const addActivePanel = (index) => {
+    setActivePanels(new Set(activePanels.add(index)));
+  };
+
+  return (
+    <div>
+      <Accordion multiple activeIndex={useMemo(() => [...activePanels], [activePanels])}>
+        {connections.map((connection, index) => (
+          <ConnectionPanel
+            host={connection.host}
+            password={connection.password}
+            key={connection.host}
+            addActivePanel={() => addActivePanel(index)}
+            removeActivePanel={() => removeActivePanel(index)}
+            isActive={activePanels.has(index)}
+          />
+        ))}
+      </Accordion>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
-  connectionStatus: state.connection.status,
+  connections: Object.values(state.connection.connectionsByHost),
 });
 
 const mapDispatchToProps = {
-  connectRequest,
   disconnectRequest,
 };
 

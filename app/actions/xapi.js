@@ -18,76 +18,91 @@ export const CONFIG_SET_REQUEST = 'xapi/CONFIG_SET_REQUEST';
 export const CONFIG_SET_SUCCESS = 'xapi/CONFIG_SET_SUCCESS';
 export const CONFIG_SET_FAILURE = 'xapi/CONFIG_SET_FAILURE';
 
-export const commandRequest = (...args) => ({
+export const commandRequest = (host, ...args) => ({
   type: COMMAND_REQUEST,
   args,
+  host,
 });
 
-export const commandSuccess = () => ({
+export const commandSuccess = (host) => ({
   type: COMMAND_SUCCESS,
+  host,
 });
 
-export const commandFailure = (error) => ({
+export const commandFailure = (host, error) => ({
   type: COMMAND_FAILURE,
   error,
+  host,
 });
 
-export const statusGetRequest = (...args) => ({
+export const statusGetRequest = (host, ...args) => ({
   type: STATUS_GET_REQUEST,
   args,
+  host,
 });
 
-export const statusGetSuccess = (...args) => ({
+export const statusGetSuccess = (host, ...args) => ({
   type: STATUS_GET_SUCCESS,
   args,
+  host,
 });
 
-export const statusGetFailure = (error) => ({
+export const statusGetFailure = (host, error) => ({
   type: STATUS_GET_FAILURE,
   error,
+  host,
 });
 
-export const statusSetRequest = (...args) => ({
+export const statusSetRequest = (host, ...args) => ({
   type: STATUS_SET_REQUEST,
   args,
+  host,
 });
 
-export const statusSetSuccess = (...args) => ({
+export const statusSetSuccess = (host, ...args) => ({
   type: STATUS_SET_SUCCESS,
   args,
+  host,
 });
 
-export const statusSetFailure = (error) => ({
+export const statusSetFailure = (host, error) => ({
   type: STATUS_SET_FAILURE,
   error,
+  host,
 });
 
-export const configSetRequest = (...args) => ({
+export const configSetRequest = (host, ...args) => ({
   type: CONFIG_SET_REQUEST,
   args,
+  host,
 });
 
-export const configSetSuccess = (...args) => ({
+export const configSetSuccess = (host, ...args) => ({
   type: CONFIG_SET_SUCCESS,
   args,
+  host,
 });
 
-export const configSetFailure = (error) => ({
+export const configSetFailure = (host, error) => ({
   type: CONFIG_SET_FAILURE,
   error,
+  host,
 });
 
-export const configGetRequest = (...args) => ({
+export const configGetRequest = (host, ...args) => ({
   type: CONFIG_GET_REQUEST,
   args,
+  host,
 });
 
-export const configGetSuccess = (...args) => ({
+export const configGetSuccess = (host, ...args) => ({
   type: CONFIG_GET_SUCCESS,
   args,
+  host,
 });
 
-export const configGetFailure = (error) => ({
+export const configGetFailure = (host, error) => ({
   type: CONFIG_GET_FAILURE,
   error,
+  host,
 });

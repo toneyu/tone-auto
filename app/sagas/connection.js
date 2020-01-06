@@ -1,14 +1,13 @@
-import { eventChannel } from 'redux-saga';
-import { take, call, all, race, put, takeLeading, fork, cancel } from 'redux-saga/effects';
 import * as jsxapi from 'jsxapi';
-
+import { eventChannel } from 'redux-saga';
+import { all, call, cancel, fork, put, race, take, takeLeading } from 'redux-saga/effects';
 import {
-  CONNECT_REQUEST,
-  DISCONNECT_REQUEST,
-  connectSuccess,
-  disconnectSuccess,
-  DISCONNECT_SUCCESS,
   connectFailure,
+  connectSuccess,
+  CONNECT_REQUEST,
+  disconnectSuccess,
+  DISCONNECT_REQUEST,
+  DISCONNECT_SUCCESS,
 } from '../actions/connection';
 import {
   SCRIPT_1_REQUEST,
@@ -18,13 +17,13 @@ import {
 } from '../actions/scripts';
 import {
   COMMAND_REQUEST,
-  STATUS_SET_REQUEST,
+  CONFIG_GET_REQUEST,
   CONFIG_SET_REQUEST,
   STATUS_GET_REQUEST,
-  CONFIG_GET_REQUEST,
+  STATUS_SET_REQUEST,
 } from '../actions/xapi';
 import { script1Saga, script2Saga, script3Saga, script4Saga } from './scripts';
-import { commandSaga, statusSetSaga, configSetSaga, configGetSaga, statusGetSaga } from './xapi';
+import { commandSaga, configGetSaga, configSetSaga, statusGetSaga, statusSetSaga } from './xapi';
 
 export function createXapiChannel(xapi) {
   return eventChannel((emit) => {
@@ -41,73 +40,103 @@ export function createXapiChannel(xapi) {
   });
 }
 
-export function* receiveMessagesWatcher(xapiChannel) {
+export function* receiveMessagesWatcher(xapiChannel, host) {
   while (true) {
     const message = yield take(xapiChannel);
     if (message === 'close') {
-      yield put(disconnectSuccess());
+      yield put(disconnectSuccess(host));
     } else if (message === 'open') {
-      yield put(connectSuccess());
+      yield put(connectSuccess(host));
     } else {
-      yield put(disconnectSuccess(message));
+      yield put(disconnectSuccess(host));
       console.error(message);
     }
   }
 }
 
-export function* xapiWatcher(xapi) {
+export function* xapiWatcher(xapi, host) {
+  const takeEveryHost = (pattern, saga) =>
+    fork(function* a() {
+      while (true) {
+        const action = yield take(pattern);
+        const { host: requestedHost } = action;
+        if (requestedHost === host) {
+          yield fork(saga, xapi, action);
+        }
+      }
+    });
+
+  yield takeEveryHost(COMMAND_REQUEST, commandSaga);
+  yield takeEveryHost(STATUS_GET_REQUEST, statusGetSaga);
+  yield takeEveryHost(STATUS_SET_REQUEST, statusSetSaga);
+  yield takeEveryHost(CONFIG_GET_REQUEST, configGetSaga);
+  yield takeEveryHost(CONFIG_SET_REQUEST, configSetSaga);
+
   yield takeLeading(SCRIPT_1_REQUEST, script1Saga, xapi);
   yield takeLeading(SCRIPT_2_REQUEST, script2Saga, xapi);
   yield takeLeading(SCRIPT_3_REQUEST, script3Saga, xapi);
   yield takeLeading(SCRIPT_4_REQUEST, script4Saga, xapi);
-
-  yield takeLeading(COMMAND_REQUEST, commandSaga, xapi);
-  yield takeLeading(STATUS_GET_REQUEST, statusGetSaga, xapi);
-  yield takeLeading(STATUS_SET_REQUEST, statusSetSaga, xapi);
-  yield takeLeading(CONFIG_GET_REQUEST, configGetSaga, xapi);
-  yield takeLeading(CONFIG_SET_REQUEST, configSetSaga, xapi);
 }
 
-export default function* messagesWatcher() {
-  let requestedNewWhileConnected = false;
-  let host;
-  let password;
+function* messagesWatcher(host, password) {
+  try {
+    const xapi = jsxapi.connect(`wss://${host}`, {
+      username: 'admin',
+      password,
+    });
+    const xapiChannel = yield call(createXapiChannel, xapi);
+
+    const scripts = yield fork(xapiWatcher, xapi, host);
+
+    const { disconnected } = yield race({
+      listeners: all([call(receiveMessagesWatcher, xapiChannel, host)]),
+      close: call(function* a() {
+        let disconnectHost;
+        do {
+          ({ host: disconnectHost } = yield take(DISCONNECT_REQUEST));
+        } while (disconnectHost !== host);
+      }),
+      disconnected: call(function* a() {
+        let disconnectHost;
+        do {
+          ({ host: disconnectHost } = yield take(DISCONNECT_SUCCESS));
+        } while (disconnectHost !== host);
+      }),
+    });
+
+    yield cancel(scripts);
+    yield xapi.close();
+
+    yield xapiChannel.close();
+    if (!disconnected) {
+      yield put(disconnectSuccess(host));
+    }
+  } catch (e) {
+    console.error(e.message);
+    yield put(connectFailure(host, e));
+  }
+}
+
+// const takeLeadingConnectionRequest = (patternOrChannel, saga, ...args) =>
+//   fork(function* a() {
+//     while (true) {
+//       const action = yield take(patternOrChannel);
+//       yield call(saga, ...args.concat(action));
+//     }
+//   });
+
+export default function*() {
+  // yield takeLeadingConnectionRequest(CONNECT_REQUEST, messagesWatcher);
+  const activeHosts = new Set();
+
   while (true) {
-    try {
-      if (!requestedNewWhileConnected) {
-        ({ host, password } = yield take(CONNECT_REQUEST));
-      }
-
-      const xapi = jsxapi.connect(`wss://${host}`, {
-        username: 'admin',
-        password,
+    const { host, password } = yield take(CONNECT_REQUEST);
+    if (!activeHosts.has(host)) {
+      yield fork(function* a() {
+        activeHosts.add(host);
+        yield call(messagesWatcher, host, password);
+        activeHosts.delete(host);
       });
-      const xapiChannel = yield call(createXapiChannel, xapi);
-
-      const scripts = yield fork(xapiWatcher, xapi);
-
-      const { requestAction, disconnected } = yield race({
-        listeners: all([call(receiveMessagesWatcher, xapiChannel)]),
-        close: take(DISCONNECT_REQUEST),
-        requestAction: take(CONNECT_REQUEST),
-        disconnected: take(DISCONNECT_SUCCESS),
-      });
-
-      requestedNewWhileConnected = requestAction !== undefined;
-      if (requestedNewWhileConnected) {
-        ({ host, password } = requestAction);
-      }
-
-      yield cancel(scripts);
-      yield xapi.close();
-
-      yield xapiChannel.close();
-      if (!disconnected) {
-        yield put(disconnectSuccess());
-      }
-    } catch (e) {
-      console.error(e.message);
-      yield put(connectFailure(e));
     }
   }
 }

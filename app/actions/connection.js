@@ -11,19 +11,22 @@ export const connectRequest = (host, password) => ({
   password,
 });
 
-export const connectSuccess = () => ({
+export const connectSuccess = (host) => ({
   type: CONNECT_SUCCESS,
+  host,
 });
 
-export const connectFailure = (error) => ({
+export const connectFailure = (host, error) => ({
   type: CONNECT_FAILURE,
   error,
 });
 
-export const disconnectRequest = () => ({
+export const disconnectRequest = (host) => ({
   type: DISCONNECT_REQUEST,
+  host,
 });
 
-export const disconnectSuccess = () => ({
+export const disconnectSuccess = (host) => ({
   type: DISCONNECT_SUCCESS,
+  host,
 });

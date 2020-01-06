@@ -13,67 +13,67 @@ class HomePage extends Component {
 
   // Custom Buttons
   handleMuteClick = () => {
-    this.props.command('Audio Microphones Mute');
+    this.props.command(this.props.host, 'Audio Microphones Mute');
   };
 
   handleUnmuteClick = () => {
-    this.props.command('Audio Microphones Unmute');
+    this.props.command(this.props.host, 'Audio Microphones Unmute');
   };
 
   handleGetMuteClick = () => {
-    this.props.statusGet('Audio Microphones Mute');
+    this.props.statusGet(this.props.host, 'Audio Microphones Mute');
   };
 
   handleSelfModeOn = () => {
-    this.props.configSet('Video Selfview Default Mode', 'On');
+    this.props.configSet(this.props.host, 'Video Selfview Default Mode', 'On');
   };
 
   handleSelfModeOff = () => {
-    this.props.configSet('Video Selfview Default Mode', 'Off');
+    this.props.configSet(this.props.host, 'Video Selfview Default Mode', 'Off');
   };
 
   handleGetSelfModeStatus = () => {
-    this.props.configGet('Video Selfview Default Mode');
+    this.props.configGet(this.props.host, 'Video Selfview Default Mode');
   };
 
   handleDoNotDisturbOn = () => {
-    this.props.command('Conference DoNotDisturb Activate');
+    this.props.command(this.props.host, 'Conference DoNotDisturb Activate');
   };
 
   handleDoNotDisturbOff = () => {
-    this.props.command('Conference DoNotDisturb Deactivate');
+    this.props.command(this.props.host, 'Conference DoNotDisturb Deactivate');
   };
 
   handleDoNotDisturbStatus = () => {
-    this.props.statusGet('Conference DoNotDisturb');
+    this.props.statusGet(this.props.host, 'Conference DoNotDisturb');
   };
 
   handleCallResume = () => {
-    this.props.command('Call Resume');
+    this.props.command(this.props.host, 'Call Resume');
   };
 
   handleCallHold = () => {
-    this.props.command('Call Hold');
+    this.props.command(this.props.host, 'Call Hold');
   };
 
   handleCallStatus = () => {
-    this.props.statusGet('Call');
+    this.props.statusGet(this.props.host, 'Call');
   };
 
   handleDialOne = () => {
-    this.props.command('Dial', { Number: '1' });
+    this.props.command(this.props.host, 'Dial', { Number: '1' });
   };
 
   handleDialTwo = () => {
-    this.props.command('Dial', { Number: '2' });
+    this.props.command(this.props.host, 'Dial', { Number: '2' });
   };
 
   handleDialX = () => {
-    this.props.command('Dial', { Number: '919205699777' });
+    this.props.command(this.props.host, 'Dial', { Number: '919205699777' });
   };
 
   handleCallDisconnect = () => {
-    this.props.command('Call Disconnect');
+    this.props.command(this.props.host, 'Call Disconnect');
   };
 
   render() {
@@ -83,8 +83,8 @@ class HomePage extends Component {
           <div className={styles.link}>Scripts</div>
         </Link> */}
         <div>
-          <button className="btn btn-danger" onClick={this.handleDisconnect}>
-            Disconnect
+          <button className="btn btn-warning" onClick={this.handleDisconnect}>
+            Disconnect Call
           </button>
           <button className="btn btn-warning" onClick={this.handleMuteClick}>
             Mute

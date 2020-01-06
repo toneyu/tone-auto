@@ -1,9 +1,35 @@
 // @flow
 import * as React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { addConnections } from '../actions/connections';
+import xcom from '../assets/xcom.csv';
 
-export default class App extends React.Component {
+const StyledApp = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.props.addConnections(xcom);
+  }
+
   render() {
     const { children } = this.props;
-    return <div style={{ width: '100vw', height: '100vh' }}>{children}</div>;
+    return <StyledApp>{children}</StyledApp>;
   }
 }
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = {
+  addConnections,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);

@@ -6,32 +6,80 @@ import {
   DISCONNECT_REQUEST,
   DISCONNECT_SUCCESS,
 } from '../actions/connection';
+import { ADD_CONNECTIONS } from '../actions/connections';
 
 const initialState = {
-  status: ConnectionStatus.DISCONNECTED,
+  connectionsByHost: {},
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case ADD_CONNECTIONS:
+      return {
+        ...state,
+        connectionsByHost: action.connections.reduce(
+          (acc, connection) => ({
+            ...acc,
+            [connection.host]: { status: ConnectionStatus.DISCONNECTED, ...connection },
+          }),
+          state.connectionsByHost,
+        ),
+      };
     case CONNECT_REQUEST:
       return {
-        status: ConnectionStatus.CONNECTING,
+        ...state,
+        connectionsByHost: {
+          ...state.connectionsByHost,
+          [action.host]: {
+            ...state.connectionsByHost[action.host],
+            status: ConnectionStatus.CONNECTING,
+          },
+        },
       };
     case CONNECT_SUCCESS:
       return {
-        status: ConnectionStatus.CONNECTED,
+        ...state,
+        connectionsByHost: {
+          ...state.connectionsByHost,
+          [action.host]: {
+            ...state.connectionsByHost[action.host],
+            status: ConnectionStatus.CONNECTED,
+          },
+        },
       };
     case CONNECT_FAILURE:
       return {
-        status: ConnectionStatus.DISCONNECTED,
+        ...state,
+        connectionsByHost: {
+          ...state.connectionsByHost,
+          [action.host]: {
+            ...state.connectionsByHost[action.host],
+            status: ConnectionStatus.DISCONNECTED,
+          },
+        },
       };
     case DISCONNECT_REQUEST:
       return {
-        status: ConnectionStatus.DISCONNECTING,
+        ...state,
+        connectionsByHost: {
+          ...state.connectionsByHost,
+          [action.host]: {
+            ...state.connectionsByHost[action.host],
+            status: ConnectionStatus.DISCONNECTING,
+          },
+        },
       };
     case DISCONNECT_SUCCESS:
       return {
-        status: ConnectionStatus.DISCONNECTED,
+        ...state,
+        ...state,
+        connectionsByHost: {
+          ...state.connectionsByHost,
+          [action.host]: {
+            ...state.connectionsByHost[action.host],
+            status: ConnectionStatus.DISCONNECTED,
+          },
+        },
       };
     default:
       return state;
