@@ -76,6 +76,10 @@ class HomePage extends Component {
     this.props.command(this.props.host, 'Call Disconnect');
   };
 
+  handleCallAccept = () => {
+    this.props.command(this.props.host, 'Call Accept');
+  };
+
   render() {
     return (
       <div>
@@ -130,6 +134,9 @@ class HomePage extends Component {
           </button>
           <button className="btn btn-warning" onClick={this.handleDialX}>
             Dial 917039480488
+          </button>
+          <button className="btn btn-warning" onClick={this.handleCallAccept}>
+            Accept Call
           </button>
           <button className="btn btn-warning" onClick={this.handleCallDisconnect}>
             Disconnect Call

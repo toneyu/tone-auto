@@ -59,7 +59,7 @@ const ConnectionPanelHeader = ({
       }
       label={
         connectionStatus === ConnectionStatus.CONNECTED
-          ? 'Discconect'
+          ? 'Disconnect'
           : connectionStatus === ConnectionStatus.CONNECTING
           ? 'Connecting'
           : connectionStatus === ConnectionStatus.DISCONNECTING
