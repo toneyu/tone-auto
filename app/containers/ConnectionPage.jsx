@@ -1,4 +1,5 @@
-import { Accordion, Button, Form } from 'grommet';
+import { Accordion, Box, Button, Form, FormField, Heading } from 'grommet';
+import { Add, Upload } from 'grommet-icons';
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { disconnectRequest } from '../actions/connection';
@@ -6,7 +7,7 @@ import { addConnections } from '../actions/connections';
 import { loadHostsFilesRequest } from '../actions/hosts';
 import ConnectionPanel from './ConnectionPanel';
 
-const ConnectionPage = ({ connections, loadHostsFilesRequest }) => {
+const ConnectionPage = ({ connections, loadHostsFilesRequest, addConnections }) => {
   const [activePanels, setActivePanels] = useState(new Set());
 
   const removeActivePanel = (index) => {
@@ -19,7 +20,7 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest }) => {
   };
 
   return (
-    <div>
+    <Box>
       <Form
         onSubmit={() => {
           const input = document.createElement('input');
@@ -34,8 +35,23 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest }) => {
           input.click();
         }}
       >
-        <Button type="submit" label="Import Hosts" />
+        <Button icon={<Upload />} type="submit" label="Import Hosts" />
       </Form>
+      <Form
+        onSubmit={({ value }) => {
+          addConnections([{ host: value.host, password: value.password }]);
+        }}
+      >
+        <Box pad="small">
+          <Heading level="4">Add a New Connection</Heading>
+          <Box direction="row" align="center" gap="small">
+            <FormField name="host" placeholder="host" />
+            <FormField type="password" placeholder="password" name="password" />
+            <Button type="submit" icon={<Add />} label="Add" />
+          </Box>
+        </Box>
+      </Form>
+      <Heading level="2">Connections</Heading>
       <Accordion multiple activeIndex={useMemo(() => [...activePanels], [activePanels])}>
         {connections.map((connection, index) => (
           <ConnectionPanel
@@ -48,7 +64,7 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest }) => {
           />
         ))}
       </Accordion>
-    </div>
+    </Box>
   );
 };
 

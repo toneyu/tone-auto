@@ -33,7 +33,7 @@ const ConnectionPanelHeader = ({
   onClick,
 }) => (
   <Header pad="small" onClick={onClick}>
-    <Heading level={3}>{host}</Heading>
+    <Heading level={4}>{host}</Heading>
     <Button
       reverse
       onClick={() =>
