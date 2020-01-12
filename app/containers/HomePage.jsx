@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   commandRequest,
+  configGetRequest,
+  configSetRequest,
   statusGetRequest,
   statusSetRequest,
-  configSetRequest,
-  configGetRequest,
 } from '../actions/xapi';
 
 class HomePage extends Component {

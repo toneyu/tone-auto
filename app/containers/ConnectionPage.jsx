@@ -1,10 +1,12 @@
-import { Accordion } from 'grommet';
+import { Accordion, Button, Form } from 'grommet';
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { disconnectRequest } from '../actions/connection';
+import { addConnections } from '../actions/connections';
+import { loadHostsFilesRequest } from '../actions/hosts';
 import ConnectionPanel from './ConnectionPanel';
 
-const ConnectionPage = ({ connections }) => {
+const ConnectionPage = ({ connections, loadHostsFilesRequest }) => {
   const [activePanels, setActivePanels] = useState(new Set());
 
   const removeActivePanel = (index) => {
@@ -18,6 +20,22 @@ const ConnectionPage = ({ connections }) => {
 
   return (
     <div>
+      <Form
+        onSubmit={() => {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.csv';
+          input.onchange = (event) => {
+            const files = Array.from(event.target.files);
+            if (files) {
+              loadHostsFilesRequest(files);
+            }
+          };
+          input.click();
+        }}
+      >
+        <Button type="submit" label="Import Hosts" />
+      </Form>
       <Accordion multiple activeIndex={useMemo(() => [...activePanels], [activePanels])}>
         {connections.map((connection, index) => (
           <ConnectionPanel
@@ -40,6 +58,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   disconnectRequest,
+  addConnections,
+  loadHostsFilesRequest,
 };
 
 export default connect(
