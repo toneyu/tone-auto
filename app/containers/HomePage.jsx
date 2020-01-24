@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'grommet';
 import {
   commandRequest,
   configGetRequest,
@@ -7,6 +8,7 @@ import {
   statusGetRequest,
   statusSetRequest,
 } from '../actions/xapi';
+import { downloadConfigurationRequest } from '../actions/xml-files';
 
 class HomePage extends Component {
   cmdRef = React.createRef();
@@ -81,12 +83,15 @@ class HomePage extends Component {
   };
 
   render() {
+    const { downloadConfigurationRequest, host } = this.props;
+
     return (
       <div>
         {/* <Link to={routes.SCRIPTS}>
           <div className={styles.link}>Scripts</div>
         </Link> */}
         <div>
+          <Button onClick={() => downloadConfigurationRequest(host)}>Download Configuration</Button>
           <button className="btn btn-warning" onClick={this.handleDisconnect}>
             Disconnect Call
           </button>
@@ -155,6 +160,7 @@ const mapDispatchToProps = {
   statusSet: statusSetRequest,
   configGet: configGetRequest,
   configSet: configSetRequest,
+  downloadConfigurationRequest,
 };
 
 export default connect(

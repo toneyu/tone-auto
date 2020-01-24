@@ -30,10 +30,7 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
-) {
+if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
   require('electron-debug')();
 }
 
@@ -43,7 +40,7 @@ const installExtensions = async () => {
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
   return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
+    extensions.map((name) => installer.default(installer[name], forceDownload)),
   ).catch(console.log);
 };
 
@@ -59,18 +56,20 @@ app.on('window-all-closed', () => {
   }
 });
 
+// Until Accenture fixes the HTTPS problem for the hosts, the following is required.
+// https://support.google.com/chrome/answer/95617?visit_id=637154459605363343-491746206&p=ui_security_indicator&rd=1
+// https://stackoverflow.com/a/48066353
+app.commandLine.appendSwitch('ignore-certificate-errors');
+
 app.on('ready', async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await installExtensions();
   }
 
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
-    height: 728
+    height: 728,
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

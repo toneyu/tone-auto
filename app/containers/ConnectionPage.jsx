@@ -1,6 +1,6 @@
 import { Accordion, Box, Button, Form, FormField, Heading } from 'grommet';
 import { Add, Upload } from 'grommet-icons';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { disconnectRequest } from '../actions/connection';
 import { addConnections } from '../actions/connections';
@@ -52,7 +52,7 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest, addConnections }) 
         </Box>
       </Form>
       <Heading level="2">Connections</Heading>
-      <Accordion multiple activeIndex={useMemo(() => [...activePanels], [activePanels])}>
+      <Accordion multiple activeIndex={[...activePanels]}>
         {connections.map((connection, index) => (
           <ConnectionPanel
             host={connection.host}
