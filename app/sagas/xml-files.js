@@ -8,7 +8,7 @@ import {
 } from '../actions/xml-files';
 
 function* downloadConfiguration({ host }) {
-  const { password } = yield select((state) => state.connection.byHost[host]);
+  const { password } = yield select((state) => state.connection.entities[host]);
 
   try {
     // TODO: Stop hardcoding username 'admin'

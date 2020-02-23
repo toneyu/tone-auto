@@ -69,7 +69,7 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest, addConnections }) 
 };
 
 const mapStateToProps = (state) => ({
-  connections: Object.values(state.connection.byHost),
+  connections: Object.values(state.connection.entities),
 });
 
 const mapDispatchToProps = {

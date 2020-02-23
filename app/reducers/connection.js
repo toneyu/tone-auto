@@ -1,3 +1,4 @@
+import { createEntityAdapter } from '@reduxjs/toolkit';
 import ConnectionStatus from '../constants/connection-status';
 import {
   CONNECT_REQUEST,
@@ -8,79 +9,51 @@ import {
 } from '../actions/connection';
 import { ADD_CONNECTIONS } from '../actions/connections';
 
-const initialState = {
-  byHost: {},
-};
+const connectionsAdapter = createEntityAdapter({
+  selectId: (connection) => connection.host,
+});
 
-export default (state = initialState, action) => {
+export default (state = connectionsAdapter.getInitialState(), action) => {
   switch (action.type) {
-    case ADD_CONNECTIONS:
-      return {
-        ...state,
-        byHost: action.connections.reduce(
-          (acc, connection) => ({
-            ...acc,
-            [connection.host]: { status: ConnectionStatus.DISCONNECTED, ...connection },
-          }),
-          state.byHost,
-        ),
-      };
-    case CONNECT_REQUEST:
-      return {
-        ...state,
-        byHost: {
-          ...state.byHost,
-          [action.host]: {
-            ...state.byHost[action.host],
-            status: ConnectionStatus.CONNECTING,
-          },
-        },
-      };
-    case CONNECT_SUCCESS:
-      return {
-        ...state,
-        byHost: {
-          ...state.byHost,
-          [action.host]: {
-            ...state.byHost[action.host],
-            status: ConnectionStatus.CONNECTED,
-          },
-        },
-      };
-    case CONNECT_FAILURE:
-      return {
-        ...state,
-        byHost: {
-          ...state.byHost,
-          [action.host]: {
-            ...state.byHost[action.host],
-            status: ConnectionStatus.DISCONNECTED,
-          },
-        },
-      };
-    case DISCONNECT_REQUEST:
-      return {
-        ...state,
-        byHost: {
-          ...state.byHost,
-          [action.host]: {
-            ...state.byHost[action.host],
-            status: ConnectionStatus.DISCONNECTING,
-          },
-        },
-      };
-    case DISCONNECT_SUCCESS:
-      return {
-        ...state,
-        ...state,
-        byHost: {
-          ...state.byHost,
-          [action.host]: {
-            ...state.byHost[action.host],
-            status: ConnectionStatus.DISCONNECTED,
-          },
-        },
-      };
+    case ADD_CONNECTIONS: {
+      return connectionsAdapter.addMany(
+        state,
+        action.connections.map((connection) => ({
+          ...connection,
+          status: ConnectionStatus.DISCONNECTED,
+        })),
+      );
+    }
+    case CONNECT_REQUEST: {
+      return connectionsAdapter.updateOne(state, {
+        id: action.host,
+        changes: { status: ConnectionStatus.CONNECTING },
+      });
+    }
+    case CONNECT_SUCCESS: {
+      return connectionsAdapter.updateOne(state, {
+        id: action.host,
+        changes: { status: ConnectionStatus.CONNECTED },
+      });
+    }
+    case CONNECT_FAILURE: {
+      return connectionsAdapter.updateOne(state, {
+        id: action.host,
+        changes: { status: ConnectionStatus.DISCONNECTED },
+      });
+    }
+    case DISCONNECT_REQUEST: {
+      return connectionsAdapter.updateOne(state, {
+        id: action.host,
+        changes: { status: ConnectionStatus.DISCONNECTING },
+      });
+    }
+    case DISCONNECT_SUCCESS: {
+      return connectionsAdapter.updateOne(state, {
+        id: action.host,
+        changes: { status: ConnectionStatus.DISCONNECTED },
+      });
+    }
     default:
       return state;
   }
