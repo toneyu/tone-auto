@@ -9,7 +9,7 @@ import {
 import { ADD_CONNECTIONS } from '../actions/connections';
 
 const initialState = {
-  connectionsByHost: {},
+  byHost: {},
 };
 
 export default (state = initialState, action) => {
@@ -17,21 +17,21 @@ export default (state = initialState, action) => {
     case ADD_CONNECTIONS:
       return {
         ...state,
-        connectionsByHost: action.connections.reduce(
+        byHost: action.connections.reduce(
           (acc, connection) => ({
             ...acc,
             [connection.host]: { status: ConnectionStatus.DISCONNECTED, ...connection },
           }),
-          state.connectionsByHost,
+          state.byHost,
         ),
       };
     case CONNECT_REQUEST:
       return {
         ...state,
-        connectionsByHost: {
-          ...state.connectionsByHost,
+        byHost: {
+          ...state.byHost,
           [action.host]: {
-            ...state.connectionsByHost[action.host],
+            ...state.byHost[action.host],
             status: ConnectionStatus.CONNECTING,
           },
         },
@@ -39,10 +39,10 @@ export default (state = initialState, action) => {
     case CONNECT_SUCCESS:
       return {
         ...state,
-        connectionsByHost: {
-          ...state.connectionsByHost,
+        byHost: {
+          ...state.byHost,
           [action.host]: {
-            ...state.connectionsByHost[action.host],
+            ...state.byHost[action.host],
             status: ConnectionStatus.CONNECTED,
           },
         },
@@ -50,10 +50,10 @@ export default (state = initialState, action) => {
     case CONNECT_FAILURE:
       return {
         ...state,
-        connectionsByHost: {
-          ...state.connectionsByHost,
+        byHost: {
+          ...state.byHost,
           [action.host]: {
-            ...state.connectionsByHost[action.host],
+            ...state.byHost[action.host],
             status: ConnectionStatus.DISCONNECTED,
           },
         },
@@ -61,10 +61,10 @@ export default (state = initialState, action) => {
     case DISCONNECT_REQUEST:
       return {
         ...state,
-        connectionsByHost: {
-          ...state.connectionsByHost,
+        byHost: {
+          ...state.byHost,
           [action.host]: {
-            ...state.connectionsByHost[action.host],
+            ...state.byHost[action.host],
             status: ConnectionStatus.DISCONNECTING,
           },
         },
@@ -73,10 +73,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...state,
-        connectionsByHost: {
-          ...state.connectionsByHost,
+        byHost: {
+          ...state.byHost,
           [action.host]: {
-            ...state.connectionsByHost[action.host],
+            ...state.byHost[action.host],
             status: ConnectionStatus.DISCONNECTED,
           },
         },

@@ -56,7 +56,7 @@ const ConnectionPanel = ({
 };
 
 const mapStateToProps = (state, props) => ({
-  connectionStatus: state.connection.connectionsByHost[props.host].status,
+  connectionStatus: state.connection.byHost[props.host].status,
 });
 
 const mapDispatchToProps = {

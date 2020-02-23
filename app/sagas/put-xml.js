@@ -3,7 +3,7 @@ import axios from 'axios';
 import { putXmlSuccess, putXmlFailure, PUT_XML_REQUEST } from '../actions/put-xml';
 
 function* putXmlSaga({ host, id, body }) {
-  const { password } = yield select((state) => state.connection.connectionsByHost[host]);
+  const { password } = yield select((state) => state.connection.byHost[host]);
 
   try {
     // const response = yield xapi.command(...args);
