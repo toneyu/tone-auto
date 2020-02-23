@@ -1,15 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from 'grommet';
+import { Button, Box, Form, FormField, TextInput } from 'grommet';
 import { configGetRequest, statusGetRequest } from '../actions/xapi';
 import { downloadConfigurationRequest } from '../actions/xml-files';
 import { putXmlRequest } from '../actions/put-xml';
 
 const HomePage = ({ host }) => {
   const dispatch = useDispatch();
+  const [dial, setDial] = useState('');
+  const [dtmf, setDtmf] = useState('');
 
   return (
     <div>
+      <Form
+        onSubmit={(event) => {
+          event.preventDefault();
+          dispatch(
+            putXmlRequest(
+              host,
+              `
+        <Command>
+        <Dial>
+            <Number>${dial}</Number>
+          </Dial>
+        </Command>`,
+            ),
+          );
+        }}
+      >
+        <Box direction="column" align="center" margin="medium">
+          <FormField label="Dial">
+            <TextInput
+              placeholder="XXX-XXX-XXXX"
+              value={dial}
+              onChange={({ target: { value } }) => setDial({ dial: value })}
+            />
+          </FormField>
+          <Button primary type="submit" label="Dial Number" />
+        </Box>
+      </Form>
+      <Form
+        onSubmit={(event) => {
+          event.preventDefault();
+          dispatch(
+            putXmlRequest(
+              host,
+              `
+      <Command>
+        <Call>
+          <DTMFSend>
+            <DTMFString>${dtmf}</DTMFString>
+          </DTMFSend>
+        </Call>
+      </Command>
+             `,
+            ),
+          );
+        }}
+      >
+        <Box direction="column" align="center" margin="medium">
+          <FormField label="DTMF">
+            <TextInput
+              value={dtmf}
+              onChange={({ target: { value } }) => setDtmf({ dtmf: value })}
+            />
+          </FormField>
+          <Button primary type="submit" label="Dial DMTF" />
+        </Box>
+      </Form>
+
       <div>
         <Button
           className="btn btn-danger"
@@ -252,16 +311,18 @@ const HomePage = ({ host }) => {
                 host,
                 `
         <Command>
-          <Dial>
-            <Number>2</Number>
-          </Dial>
+          <Call>
+            <DTMFSend>
+              <DTMFString>1#</DTMFString>
+            </DTMFSend>
+          </Call>
         </Command>
                `,
               ),
             )
           }
         >
-          Dial 2
+          Send 1#
         </button>
         <button
           className="btn btn-warning"
@@ -270,17 +331,17 @@ const HomePage = ({ host }) => {
               putXmlRequest(
                 host,
                 `
-        <Command>
-          <Dial>
-            <Number>917039480488</Number>
-          </Dial>
-        </Command>
+                <Command>
+                <Dial>
+                  <Number>123@connect.accenture.com</Number>
+                </Dial>
+              </Command>
                `,
               ),
             )
           }
         >
-          Dial 917039480488
+          Dial 123@connect.accenture.com
         </button>
         <button
           className="btn btn-warning"
