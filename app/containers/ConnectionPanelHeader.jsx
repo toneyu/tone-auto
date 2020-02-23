@@ -1,7 +1,7 @@
 import { Header, Heading, Button } from 'grommet';
 import { Close, Connect } from 'grommet-icons';
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { connectRequest, disconnectRequest } from '../actions/connection';
 import ConnectionStatus from '../constants/connection-status';
 
@@ -24,60 +24,47 @@ const spinner = (
   </svg>
 );
 
-const ConnectionPanelHeader = ({
-  connectionStatus,
-  connectRequest,
-  disconnectRequest,
-  host,
-  password,
-  onClick,
-}) => (
-  <Header pad="small" onClick={onClick}>
-    <Heading level={4}>{host}</Heading>
-    <Button
-      reverse
-      onClick={() =>
-        connectionStatus === ConnectionStatus.DISCONNECTED
-          ? connectRequest(host, password)
-          : connectionStatus === ConnectionStatus.CONNECTED
-          ? disconnectRequest(host)
-          : ''
-      }
-      disabled={
-        connectionStatus === ConnectionStatus.CONNECTING ||
-        connectionStatus === ConnectionStatus.DISCONNECTING
-      }
-      icon={
-        connectionStatus === ConnectionStatus.CONNECTED ? (
-          <Close />
-        ) : connectionStatus === ConnectionStatus.CONNECTING ||
-          connectionStatus === ConnectionStatus.DISCONNECTING ? (
-          <>{spinner}</>
-        ) : (
-          <Connect />
-        )
-      }
-      label={
-        connectionStatus === ConnectionStatus.CONNECTED
-          ? 'Disconnect'
-          : connectionStatus === ConnectionStatus.CONNECTING
-          ? 'Connecting'
-          : connectionStatus === ConnectionStatus.DISCONNECTING
-          ? 'Disconnecting'
-          : 'Connect'
-      }
-    />
-  </Header>
-);
+const ConnectionPanelHeader = ({ connectionStatus, host, password, onClick }) => {
+  const dispatch = useDispatch();
 
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = {
-  connectRequest,
-  disconnectRequest,
+  return (
+    <Header pad="small" onClick={onClick}>
+      <Heading level={4}>{host}</Heading>
+      <Button
+        reverse
+        onClick={() =>
+          connectionStatus === ConnectionStatus.DISCONNECTED
+            ? dispatch(connectRequest(host, password))
+            : connectionStatus === ConnectionStatus.CONNECTED
+            ? dispatch(disconnectRequest(host))
+            : ''
+        }
+        disabled={
+          connectionStatus === ConnectionStatus.CONNECTING ||
+          connectionStatus === ConnectionStatus.DISCONNECTING
+        }
+        icon={
+          connectionStatus === ConnectionStatus.CONNECTED ? (
+            <Close />
+          ) : connectionStatus === ConnectionStatus.CONNECTING ||
+            connectionStatus === ConnectionStatus.DISCONNECTING ? (
+            <>{spinner}</>
+          ) : (
+            <Connect />
+          )
+        }
+        label={
+          connectionStatus === ConnectionStatus.CONNECTED
+            ? 'Disconnect'
+            : connectionStatus === ConnectionStatus.CONNECTING
+            ? 'Connecting'
+            : connectionStatus === ConnectionStatus.DISCONNECTING
+            ? 'Disconnecting'
+            : 'Connect'
+        }
+      />
+    </Header>
+  );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ConnectionPanelHeader);
+export default ConnectionPanelHeader;
