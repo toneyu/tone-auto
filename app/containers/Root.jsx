@@ -7,7 +7,7 @@ import { Grommet } from 'grommet';
 import Routes from '../Routes';
 
 const Root = ({ store, history }) => (
-  <Grommet plain>
+  <Grommet plain full>
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <Routes />

@@ -1,6 +1,17 @@
 import * as jsxapi from 'jsxapi';
+// import normalizePath from 'jsxapi/lib/xapi/normalizePath.js';
 import { eventChannel } from 'redux-saga';
-import { all, call, cancel, fork, put, race, take, takeLeading } from 'redux-saga/effects';
+import {
+  takeEvery,
+  all,
+  call,
+  cancel,
+  fork,
+  put,
+  race,
+  take,
+  takeLeading,
+} from 'redux-saga/effects';
 import {
   connectFailure,
   connectSuccess,
@@ -24,6 +35,30 @@ import {
 } from '../actions/xapi';
 import { script1Saga, script2Saga, script3Saga, script4Saga } from './scripts';
 import { commandSaga, configGetSaga, configSetSaga, statusGetSaga, statusSetSaga } from './xapi';
+import { updateStatus } from '../actions/status';
+
+export function createMuteChannel(xapi) {
+  return eventChannel((emit) => {
+    let off = () => {};
+    xapi.status.get('Audio Microphones Mute').then((data) => {
+      emit(data);
+      off = xapi.status.on('Audio Microphones Mute', (data, root) => {
+        console.log(data);
+        console.log(root);
+        console.log('Audio Microphones Mute');
+        emit(data);
+      });
+    });
+
+    // xapi.status.get('Status/Audio/Microphones/Mute');
+
+    const unsubscribe = () => {
+      off();
+    };
+
+    return unsubscribe;
+  });
+}
 
 export function createXapiChannel(xapi) {
   return eventChannel((emit) => {
@@ -76,7 +111,20 @@ export function* xapiWatcher(xapi, host) {
   yield takeLeading(SCRIPT_2_REQUEST, script2Saga, xapi);
   yield takeLeading(SCRIPT_3_REQUEST, script3Saga, xapi);
   yield takeLeading(SCRIPT_4_REQUEST, script4Saga, xapi);
+
+  const muteChannel = yield call(createMuteChannel, xapi);
+  yield takeEvery(muteChannel, function* a(data) {
+    yield put(updateStatus(host, 'Audio Microphones Mute', data));
+  });
 }
+
+// function* feedbackWatcher(xapi, path) {
+//   const muteChannel = yield call(createMuteChannel, xapi);
+
+//   yield takeEvery(muteChannel, function* a(data) {
+//     yield put(updateStatus(host, 'Audio Microphones Mute', data));
+//   });
+// }
 
 function* messagesWatcher(host, password) {
   try {

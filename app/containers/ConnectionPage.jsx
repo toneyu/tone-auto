@@ -35,13 +35,14 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest, addConnections }) 
           input.click();
         }}
       >
-        <Button icon={<Upload />} type="submit" label="Import Hosts" />
+        * <Button icon={<Upload />} type="submit" label="Import Hosts" />
       </Form>
       <Form
         onSubmit={({ value }) => {
           addConnections([{ host: value.host, password: value.password }]);
         }}
       >
+        {' '}
         <Box pad="small">
           <Heading level="4">Add a New Connection</Heading>
           <Box direction="row" align="center" gap="small">
@@ -49,7 +50,7 @@ const ConnectionPage = ({ connections, loadHostsFilesRequest, addConnections }) 
             <FormField type="password" placeholder="password" name="password" />
             <Button type="submit" icon={<Add />} label="Add" />
           </Box>
-        </Box>
+        </Box>{' '}
       </Form>
       <Heading level="2">Connections</Heading>
       <Accordion multiple activeIndex={[...activePanels]}>

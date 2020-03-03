@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Button, Box, Form, FormField, TextInput } from 'grommet';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Box, Form, FormField, TextInput, Text } from 'grommet';
 import { configGetRequest, statusGetRequest } from '../actions/xapi';
-import { downloadConfigurationRequest } from '../actions/xml-files';
+// import { downloadConfigurationRequest } from '../actions/xml-files';
 import { putXmlRequest } from '../actions/put-xml';
+import { setupStatusFeedbackRequest } from '../actions/status';
 
 const HomePage = ({ host }) => {
   const dispatch = useDispatch();
   const [dial, setDial] = useState('');
   const [dtmf, setDtmf] = useState('');
 
+  const muteStatus = useSelector(
+    (state) => state.connection.entities[host]?.status?.['Audio Microphones Mute'] ?? 'Loading...',
+  );
+
   return (
     <div>
+      <Button
+        label="Mute Feedback"
+        onClick={() => dispatch(setupStatusFeedbackRequest(host, 'Audio Microphones Mute'))}
+      />
+      <Box>
+        <Text>Mute: {muteStatus}</Text>
+      </Box>
       <Form
         onSubmit={(event) => {
           event.preventDefault();
@@ -61,21 +73,22 @@ const HomePage = ({ host }) => {
         <Box direction="column" align="center" margin="medium">
           <FormField label="DTMF">
             <TextInput
+              placeholder="XXXXXXXXXX#"
               value={dtmf}
               onChange={({ target: { value } }) => setDtmf({ dtmf: value })}
             />
           </FormField>
-          <Button primary type="submit" label="Dial DMTF" />
+          <Button primary type="submit" label="Send DMTF" />
         </Box>
       </Form>
 
       <div>
-        <Button
+        {/* <Button
           className="btn btn-danger"
           onClick={() => dispatch(downloadConfigurationRequest(host))}
         >
           Download Configuration
-        </Button>
+        </Button> */}
         <button
           className="btn btn-warning"
           onClick={() =>
