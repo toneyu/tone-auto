@@ -35,17 +35,22 @@ import {
 } from '../actions/xapi';
 import { script1Saga, script2Saga, script3Saga, script4Saga } from './scripts';
 import { commandSaga, configGetSaga, configSetSaga, statusGetSaga, statusSetSaga } from './xapi';
-import { updateStatus } from '../actions/status';
+import {
+  updateStatus,
+  SETUP_STATUS_FEEDBACK_REQUEST,
+  setupStatusFeedbackFailure,
+  setupStatusFeedbackSuccess,
+} from '../actions/status';
 
-export function createMuteChannel(xapi) {
+export function createFeedbackChannel(xapi, path) {
   return eventChannel((emit) => {
     let off = () => {};
-    xapi.status.get('Audio Microphones Mute').then((data) => {
+    xapi.status.get(path).then((data) => {
       emit(data);
-      off = xapi.status.on('Audio Microphones Mute', (data, root) => {
+      off = xapi.status.on(path, (data, root) => {
         console.log(data);
         console.log(root);
-        console.log('Audio Microphones Mute');
+        console.log(path);
         emit(data);
       });
     });
@@ -89,6 +94,18 @@ export function* receiveMessagesWatcher(xapiChannel, host) {
   }
 }
 
+function* feedbackWatcher(xapi, host, { path }) {
+  try {
+    const channel = yield call(createFeedbackChannel, xapi, path);
+    yield put(setupStatusFeedbackSuccess(host, path));
+    yield takeEvery(channel, function* a(data) {
+      yield put(updateStatus(host, path, data));
+    });
+  } catch (error) {
+    yield put(setupStatusFeedbackFailure(host, path, error));
+  }
+}
+
 export function* xapiWatcher(xapi, host) {
   const takeEveryHost = (pattern, saga) =>
     fork(function* a() {
@@ -112,19 +129,18 @@ export function* xapiWatcher(xapi, host) {
   yield takeLeading(SCRIPT_3_REQUEST, script3Saga, xapi);
   yield takeLeading(SCRIPT_4_REQUEST, script4Saga, xapi);
 
-  const muteChannel = yield call(createMuteChannel, xapi);
-  yield takeEvery(muteChannel, function* a(data) {
-    yield put(updateStatus(host, 'Audio Microphones Mute', data));
-  });
+  // const muteChannel = yield call(createMuteChannel, xapi);
+  // yield takeEvery(muteChannel, function* a(data) {
+  //   yield put(updateStatus(host, 'Audio Microphones Mute', data));
+  // });
+
+  yield takeEvery(
+    (action) => action.type === SETUP_STATUS_FEEDBACK_REQUEST && action.host === host,
+    feedbackWatcher,
+    xapi,
+    host,
+  );
 }
-
-// function* feedbackWatcher(xapi, path) {
-//   const muteChannel = yield call(createMuteChannel, xapi);
-
-//   yield takeEvery(muteChannel, function* a(data) {
-//     yield put(updateStatus(host, 'Audio Microphones Mute', data));
-//   });
-// }
 
 function* messagesWatcher(host, password) {
   try {

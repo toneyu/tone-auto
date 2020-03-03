@@ -9,11 +9,10 @@ export const setupStatusFeedbackRequest = (host, path) => ({
   path,
 });
 
-export const setupStatusFeedbackSuccess = (host, path, status) => ({
+export const setupStatusFeedbackSuccess = (host, path) => ({
   type: SETUP_STATUS_FEEDBACK_SUCCESS,
   host,
   path,
-  status,
 });
 
 export const setupStatusFeedbackFailure = (host, path, error) => ({
