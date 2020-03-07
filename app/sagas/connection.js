@@ -41,6 +41,7 @@ import {
   setupFeedbackSuccess,
   TEARDOWN_FEEDBACK_REQUEST,
   teardownFeedbackFailure,
+  teardownFeedbackSuccess,
 } from '../actions/feedback';
 import { updateStatus } from '../actions/statuses';
 
@@ -61,7 +62,6 @@ export function createFeedbackChannel(xapi, path) {
 
     const unsubscribe = () => {
       off();
-      emit('close');
     };
 
     return unsubscribe;
@@ -111,16 +111,16 @@ function* feedbackWatcher(xapi, host, { path }) {
   }
 
   if (updateStatusWatcher && channel) {
-    try {
-      yield take((action) => action.type === TEARDOWN_FEEDBACK_REQUEST && action.host === host);
-      yield cancel(updateStatusWatcher);
-      let closed = false;
-      while (!closed) {
-        const message = yield take(channel);
-        closed = message === 'close';
+    while (true) {
+      try {
+        yield take((action) => action.type === TEARDOWN_FEEDBACK_REQUEST && action.host === host);
+        yield cancel(updateStatusWatcher);
+        channel.close();
+        yield put(teardownFeedbackSuccess(host, path));
+        break;
+      } catch (error) {
+        yield put(teardownFeedbackFailure(host, path, error));
       }
-    } catch (error) {
-      yield put(teardownFeedbackFailure(host, path, error));
     }
   }
 }

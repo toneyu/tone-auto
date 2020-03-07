@@ -19,7 +19,7 @@ const Statuses = ({ host }) => {
         onClick={() => dispatch(teardownFeedbackRequest(host, 'Audio Microphones Mute'))}
       />
       <Text>Mute: {muteStatus ?? 'Loading...'}</Text>
-      <Text>Attached: {attached ? 'true' : 'false'}</Text>
+      <Text>Attached: {attached}</Text>
     </Box>
   );
 };
