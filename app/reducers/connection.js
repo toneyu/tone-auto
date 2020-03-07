@@ -8,7 +8,6 @@ import {
   DISCONNECT_SUCCESS,
 } from '../actions/connection';
 import { ADD_CONNECTIONS } from '../actions/connections';
-import { UPDATE_STATUS } from '../actions/status';
 
 const connectionsAdapter = createEntityAdapter({
   selectId: (connection) => connection.host,
@@ -53,16 +52,6 @@ export default (state = connectionsAdapter.getInitialState(), action) => {
       return connectionsAdapter.updateOne(state, {
         id: action.host,
         changes: { status: ConnectionStatus.DISCONNECTED },
-      });
-    }
-    case UPDATE_STATUS: {
-      return connectionsAdapter.updateOne(state, {
-        id: action.host,
-        changes: {
-          status: {
-            [action.path]: action.status,
-          },
-        },
       });
     }
     default:

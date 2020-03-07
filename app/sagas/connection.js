@@ -36,11 +36,13 @@ import {
 import { script1Saga, script2Saga, script3Saga, script4Saga } from './scripts';
 import { commandSaga, configGetSaga, configSetSaga, statusGetSaga, statusSetSaga } from './xapi';
 import {
-  updateStatus,
-  SETUP_STATUS_FEEDBACK_REQUEST,
-  setupStatusFeedbackFailure,
-  setupStatusFeedbackSuccess,
-} from '../actions/status';
+  SETUP_FEEDBACK_REQUEST,
+  setupFeedbackFailure,
+  setupFeedbackSuccess,
+  TEARDOWN_FEEDBACK_REQUEST,
+  teardownFeedbackFailure,
+} from '../actions/feedback';
+import { updateStatus } from '../actions/statuses';
 
 export function createFeedbackChannel(xapi, path) {
   return eventChannel((emit) => {
@@ -59,6 +61,7 @@ export function createFeedbackChannel(xapi, path) {
 
     const unsubscribe = () => {
       off();
+      emit('close');
     };
 
     return unsubscribe;
@@ -95,14 +98,30 @@ export function* receiveMessagesWatcher(xapiChannel, host) {
 }
 
 function* feedbackWatcher(xapi, host, { path }) {
+  let updateStatusWatcher;
+  let channel;
   try {
-    const channel = yield call(createFeedbackChannel, xapi, path);
-    yield put(setupStatusFeedbackSuccess(host, path));
-    yield takeEvery(channel, function* a(data) {
+    channel = yield call(createFeedbackChannel, xapi, path);
+    yield put(setupFeedbackSuccess(host, path));
+    updateStatusWatcher = yield takeEvery(channel, function* a(data) {
       yield put(updateStatus(host, path, data));
     });
   } catch (error) {
-    yield put(setupStatusFeedbackFailure(host, path, error));
+    yield put(setupFeedbackFailure(host, path, error));
+  }
+
+  if (updateStatusWatcher && channel) {
+    try {
+      yield take((action) => action.type === TEARDOWN_FEEDBACK_REQUEST && action.host === host);
+      yield cancel(updateStatusWatcher);
+      let closed = false;
+      while (!closed) {
+        const message = yield take(channel);
+        closed = message === 'close';
+      }
+    } catch (error) {
+      yield put(teardownFeedbackFailure(host, path, error));
+    }
   }
 }
 
@@ -135,7 +154,7 @@ export function* xapiWatcher(xapi, host) {
   // });
 
   yield takeEvery(
-    (action) => action.type === SETUP_STATUS_FEEDBACK_REQUEST && action.host === host,
+    (action) => action.type === SETUP_FEEDBACK_REQUEST && action.host === host,
     feedbackWatcher,
     xapi,
     host,
