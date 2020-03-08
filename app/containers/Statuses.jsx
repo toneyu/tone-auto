@@ -18,7 +18,7 @@ const Statuses = ({ host }) => {
     <Box>
       <Button
         label="Teardown"
-        onClick={() => dispatch(teardownFeedbackRequest(host, 'Audio Microphones Mute'))}
+        onClick={() => dispatch(teardownFeedbackRequest(host, 'Status/Audio/Microphones/Mute'))}
       />
       <Text>Mute: {JSON.stringify(muteStatus) ?? 'Loading...'}</Text>
       <Text>Attached: {attached}</Text>
