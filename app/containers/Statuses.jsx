@@ -8,9 +8,11 @@ import { setupFeedbackRequest, teardownFeedbackRequest } from '../actions/feedba
 
 const Statuses = ({ host }) => {
   const dispatch = useDispatch();
-  const muteStatus = useSelector(statusSelector(host, 'Audio Microphones Mute'));
-  useMount(() => dispatch(setupFeedbackRequest(host, 'Audio Microphones Mute')));
-  const attached = useSelector(feedbackSelector(host, 'Audio Microphones Mute'));
+  const muteStatus = useSelector(statusSelector(host, 'Status/Audio/Microphones/Mute'));
+  useMount(() => {
+    dispatch(setupFeedbackRequest(host, 'Status/Audio/Microphones/Mute'));
+  });
+  const attached = useSelector(feedbackSelector(host, 'Status/Audio/Microphones/Mute'));
 
   return (
     <Box>
@@ -18,7 +20,7 @@ const Statuses = ({ host }) => {
         label="Teardown"
         onClick={() => dispatch(teardownFeedbackRequest(host, 'Audio Microphones Mute'))}
       />
-      <Text>Mute: {muteStatus ?? 'Loading...'}</Text>
+      <Text>Mute: {JSON.stringify(muteStatus) ?? 'Loading...'}</Text>
       <Text>Attached: {attached}</Text>
     </Box>
   );

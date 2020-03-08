@@ -18,6 +18,7 @@ export const connectSuccess = (host) => ({
 
 export const connectFailure = (host, error) => ({
   type: CONNECT_FAILURE,
+  host,
   error,
 });
 

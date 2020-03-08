@@ -27,7 +27,12 @@ export default (state = connectionsAdapter.getInitialState(), action) => {
     case CONNECT_REQUEST: {
       return connectionsAdapter.updateOne(state, {
         id: action.host,
-        changes: { status: ConnectionStatus.CONNECTING },
+        changes: {
+          status:
+            state.entities[action.host]?.status === ConnectionStatus.DISCONNECTED
+              ? ConnectionStatus.CONNECTING
+              : state.entities[action.host]?.status,
+        },
       });
     }
     case CONNECT_SUCCESS: {

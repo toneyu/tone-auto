@@ -11,7 +11,9 @@ import {
   race,
   take,
   takeLeading,
+  select,
 } from 'redux-saga/effects';
+
 import {
   connectFailure,
   connectSuccess,
@@ -44,21 +46,26 @@ import {
   teardownFeedbackSuccess,
 } from '../actions/feedback';
 import { updateStatus } from '../actions/statuses';
+import { connectionStatusSelector } from '../selectors/connections';
+import ConnectionStatus from '../constants/connection-status';
 
-export function createFeedbackChannel(xapi, path) {
+export function createFeedbackChannel(xapi, host, password, path) {
   return eventChannel((emit) => {
     let off = () => {};
-    xapi.status.get(path).then((data) => {
+    const [type, ...remainingPath] = path.split('/');
+
+    const api = type === 'Configuration' ? xapi.config : xapi.status;
+    api.get(remainingPath).then((data) => {
+      console.log(data);
       emit(data);
-      off = xapi.status.on(path, (data, root) => {
+      console.log(xapi);
+      off = xapi.feedback.on(path, (data, root) => {
         console.log(data);
         console.log(root);
         console.log(path);
         emit(data);
       });
     });
-
-    // xapi.status.get('Status/Audio/Microphones/Mute');
 
     const unsubscribe = () => {
       off();
@@ -97,11 +104,11 @@ export function* receiveMessagesWatcher(xapiChannel, host) {
   }
 }
 
-function* feedbackWatcher(xapi, host, { path }) {
+function* feedbackWatcher(xapi, host, password, { path }) {
   let updateStatusWatcher;
   let channel;
   try {
-    channel = yield call(createFeedbackChannel, xapi, path);
+    channel = yield call(createFeedbackChannel, xapi, host, password, path);
     yield put(setupFeedbackSuccess(host, path));
     updateStatusWatcher = yield takeEvery(channel, function* a(data) {
       yield put(updateStatus(host, path, data));
@@ -125,7 +132,7 @@ function* feedbackWatcher(xapi, host, { path }) {
   }
 }
 
-export function* xapiWatcher(xapi, host) {
+export function* xapiWatcher(xapi, host, password) {
   const takeEveryHost = (pattern, saga) =>
     fork(function* a() {
       while (true) {
@@ -148,28 +155,30 @@ export function* xapiWatcher(xapi, host) {
   yield takeLeading(SCRIPT_3_REQUEST, script3Saga, xapi);
   yield takeLeading(SCRIPT_4_REQUEST, script4Saga, xapi);
 
-  // const muteChannel = yield call(createMuteChannel, xapi);
-  // yield takeEvery(muteChannel, function* a(data) {
-  //   yield put(updateStatus(host, 'Audio Microphones Mute', data));
-  // });
-
   yield takeEvery(
     (action) => action.type === SETUP_FEEDBACK_REQUEST && action.host === host,
     feedbackWatcher,
     xapi,
     host,
+    password,
   );
 }
 
-function* messagesWatcher(host, password) {
+function* messagesWatcher({ host, password }) {
+  const status = yield select(connectionStatusSelector(host));
+  if (status !== ConnectionStatus.CONNECTING) {
+    return;
+  }
+
   try {
+    console.log(host);
     const xapi = jsxapi.connect(`wss://${host}`, {
       username: 'admin',
       password,
     });
     const xapiChannel = yield call(createXapiChannel, xapi);
 
-    const scripts = yield fork(xapiWatcher, xapi, host);
+    const scripts = yield fork(xapiWatcher, xapi, host, password);
 
     const { disconnected } = yield race({
       listeners: all([call(receiveMessagesWatcher, xapiChannel, host)]),
@@ -200,26 +209,6 @@ function* messagesWatcher(host, password) {
   }
 }
 
-// const takeLeadingConnectionRequest = (patternOrChannel, saga, ...args) =>
-//   fork(function* a() {
-//     while (true) {
-//       const action = yield take(patternOrChannel);
-//       yield call(saga, ...args.concat(action));
-//     }
-//   });
-
 export default function*() {
-  // yield takeLeadingConnectionRequest(CONNECT_REQUEST, messagesWatcher);
-  const activeHosts = new Set();
-
-  while (true) {
-    const { host, password } = yield take(CONNECT_REQUEST);
-    if (!activeHosts.has(host)) {
-      yield fork(function* a() {
-        activeHosts.add(host);
-        yield call(messagesWatcher, host, password);
-        activeHosts.delete(host);
-      });
-    }
-  }
+  yield takeEvery(CONNECT_REQUEST, messagesWatcher);
 }
