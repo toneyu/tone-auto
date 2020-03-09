@@ -48,6 +48,8 @@ import {
 import { updateStatus } from '../actions/statuses';
 import { connectionStatusSelector } from '../selectors/connections';
 import ConnectionStatus from '../constants/connection-status';
+import { feedbackSelector } from '../selectors/feedbacks';
+import { FeedbackStatus } from '../constants';
 
 export function createFeedbackChannel(xapi, host, password, path) {
   return eventChannel((emit) => {
@@ -105,6 +107,11 @@ export function* receiveMessagesWatcher(xapiChannel, host) {
 }
 
 function* feedbackWatcher(xapi, host, password, { path }) {
+  const attached = yield select(feedbackSelector(host, path));
+  if (attached !== FeedbackStatus.CONNECTING) {
+    return;
+  }
+
   let updateStatusWatcher;
   let channel;
   try {

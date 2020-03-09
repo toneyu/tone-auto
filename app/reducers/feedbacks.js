@@ -18,7 +18,11 @@ export default (state = statusesAttachedAdapter.getInitialState(), action) => {
     case SETUP_FEEDBACK_REQUEST: {
       return statusesAttachedAdapter.upsertOne(state, {
         host: action.host,
-        [action.path]: FeedbackStatus.CONNECTING,
+        [action.path]:
+          !state.entities[action.host]?.[action.path] ||
+          state.entities[action.host]?.[action.path] === FeedbackStatus.DISCONNECTED
+            ? FeedbackStatus.CONNECTING
+            : state.entities[action.host]?.[action.path],
       });
     }
     case SETUP_FEEDBACK_SUCCESS: {
