@@ -1,27 +1,40 @@
 import React from 'react';
-import { Box, Text, Button } from 'grommet';
-import { useSelector, useDispatch } from 'react-redux';
-import { useMount } from 'react-use';
-import { statusSelector } from '../selectors/statuses';
-import { feedbackSelector } from '../selectors/feedbacks';
-import { setupFeedbackRequest, teardownFeedbackRequest } from '../actions/feedback';
+import { Box } from 'grommet';
+
+import FeedbackText from './FeedbackText';
 
 const Statuses = ({ host }) => {
-  const dispatch = useDispatch();
-  const muteStatus = useSelector(statusSelector(host, 'Status/Audio/Microphones/Mute'));
-  useMount(() => {
-    dispatch(setupFeedbackRequest(host, 'Status/Audio/Microphones/Mute'));
-  });
-  const attached = useSelector(feedbackSelector(host, 'Status/Audio/Microphones/Mute'));
-
   return (
     <Box>
-      <Button
-        label="Teardown"
-        onClick={() => dispatch(teardownFeedbackRequest(host, 'Status/Audio/Microphones/Mute'))}
+      <FeedbackText label="Product" host={host} path="Status/SystemUnit/ProductId" />
+      <FeedbackText label="Mute" host={host} path="Status/Audio/Microphones/Mute" />
+      <FeedbackText label="System time" host={host} path="Status/Time/SystemTime" />
+      <FeedbackText
+        label="Serial number"
+        host={host}
+        path="Status/SystemUnit/Hardware/Module/SerialNumber"
       />
-      <Text>Mute: {JSON.stringify(muteStatus) ?? 'Loading...'}</Text>
-      <Text>Attached: {attached}</Text>
+      <FeedbackText
+        label="Software version"
+        host={host}
+        path="Status/Provisioning/Software/Current/VersionId"
+      />
+      <FeedbackText
+        label="Installed options"
+        host={host}
+        path="Status/SystemUnit/Software/OptionKeys"
+      />
+      <FeedbackText label="System name" host={host} path="Configuration/SystemUnit/Name" />
+      <FeedbackText label="IPv4" host={host} path="Status/Network/1/IPv4/Address" />
+      <FeedbackText label="IPv6" host={host} path="Status/Network/1/IPv6/Address" />
+      <FeedbackText label="MAC address" host={host} path="Status/Network/1/Ethernet/MacAddress" />
+      <FeedbackText
+        label="Temperature"
+        host={host}
+        path="Status/SystemUnit/Hardware/Monitoring/Temperature/Status"
+      />
+      <FeedbackText label="Selfview mode" host={host} path="Status/Video/Selfview/Mode" />
+      <FeedbackText label="Do not disturb" host={host} path="Status/Conference/DoNotDisturb" />
     </Box>
   );
 };

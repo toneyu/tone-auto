@@ -15,7 +15,6 @@ function* loadHostsFilesSaga({ files }) {
         return new Response(blob).text();
       }),
     );
-    console.log(csvTexts);
     const parsedCsvs = csvTexts.flatMap(
       (csvText) =>
         Papa.parse(csvText, {

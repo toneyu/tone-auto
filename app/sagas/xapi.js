@@ -15,7 +15,6 @@ import {
 export function* commandSaga(xapi, { args }) {
   try {
     const response = yield xapi.command(...args);
-    console.log(response);
 
     yield put(commandSuccess(response));
   } catch (e) {
@@ -26,7 +25,6 @@ export function* commandSaga(xapi, { args }) {
 export function* configGetSaga(xapi, { args }) {
   try {
     const response = yield xapi.config.get(...args);
-    console.log(response);
 
     yield put(configGetSuccess(response));
   } catch (e) {
@@ -37,7 +35,6 @@ export function* configGetSaga(xapi, { args }) {
 export function* statusGetSaga(xapi, { args }) {
   try {
     const response = yield xapi.status.get(...args);
-    console.log(response);
 
     yield put(statusGetSuccess(response));
   } catch (e) {
@@ -48,7 +45,6 @@ export function* statusGetSaga(xapi, { args }) {
 export function* configSetSaga(xapi, { args }) {
   try {
     const response = yield xapi.config.set(...args);
-    console.log(response);
 
     yield put(configSetSuccess(response));
   } catch (e) {
@@ -59,7 +55,6 @@ export function* configSetSaga(xapi, { args }) {
 export function* statusSetSaga(xapi, { args }) {
   try {
     const response = yield xapi.status.set(...args);
-    console.log(response);
 
     yield put(statusSetSuccess(response));
   } catch (e) {

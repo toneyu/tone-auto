@@ -57,17 +57,18 @@ export function createFeedbackChannel(xapi, host, password, path) {
     const [type, ...remainingPath] = path.split('/');
 
     const api = type === 'Configuration' ? xapi.config : xapi.status;
-    api.get(remainingPath).then((data) => {
-      console.log(data);
-      emit(data);
-      console.log(xapi);
-      off = xapi.feedback.on(path, (data, root) => {
-        console.log(data);
-        console.log(root);
-        console.log(path);
+    api
+      .get(remainingPath)
+      .then((data) => {
+        emit('ready');
         emit(data);
+        off = xapi.feedback.on(path, (data) => {
+          emit(data);
+        });
+      })
+      .catch((error) => {
+        emit(error);
       });
-    });
 
     const unsubscribe = () => {
       off();
@@ -116,10 +117,18 @@ function* feedbackWatcher(xapi, host, password, { path }) {
   let channel;
   try {
     channel = yield call(createFeedbackChannel, xapi, host, password, path);
-    yield put(setupFeedbackSuccess(host, path));
-    updateStatusWatcher = yield takeEvery(channel, function* a(data) {
-      yield put(updateStatus(host, path, data));
-    });
+    const feedbackReadyStatus = yield take(channel);
+    if (feedbackReadyStatus === 'ready') {
+      yield put(setupFeedbackSuccess(host, path));
+      updateStatusWatcher = yield takeEvery(channel, function* a(data) {
+        if (data instanceof Error) {
+          throw data;
+        }
+        yield put(updateStatus(host, path, data));
+      });
+    } else {
+      throw new Error(JSON.stringify(feedbackReadyStatus));
+    }
   } catch (error) {
     yield put(setupFeedbackFailure(host, path, error));
   }
@@ -178,7 +187,6 @@ function* messagesWatcher({ host, password }) {
   }
 
   try {
-    console.log(host);
     const xapi = jsxapi.connect(`wss://${host}`, {
       username: 'admin',
       password,

@@ -34,7 +34,7 @@ export default (state = statusesAttachedAdapter.getInitialState(), action) => {
     case SETUP_FEEDBACK_FAILURE: {
       return statusesAttachedAdapter.upsertOne(state, {
         host: action.host,
-        [action.path]: FeedbackStatus.DISCONNECTED,
+        [action.path]: FeedbackStatus.FAILED,
       });
     }
     case TEARDOWN_FEEDBACK_REQUEST: {

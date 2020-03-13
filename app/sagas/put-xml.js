@@ -6,9 +6,6 @@ function* putXmlSaga({ host, id, body }) {
   const { password } = yield select((state) => state.connection.entities[host]);
 
   try {
-    // const response = yield xapi.command(...args);
-    // console.log(response);
-
     // TODO: Stop hardcoding username 'admin'
     const response = yield axios.post(`https://${host}/putxml`, body, {
       auth: {

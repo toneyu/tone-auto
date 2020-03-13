@@ -18,7 +18,6 @@ function* downloadConfiguration({ host }) {
         password,
       },
     });
-    console.log(data);
     saveAs(new File([data], `configuration-${host}.xml`, { type: 'text/xml' }));
     yield put(downloadConfigurationSuccess(data));
   } catch (error) {
