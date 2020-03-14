@@ -1,11 +1,9 @@
 import { Box, Grid, Main } from 'grommet';
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
-import ConnectedRoute from './ConnectedRoute';
+import { Route, Switch } from 'react-router';
 import routes from './constants/routes';
 import App from './containers/App';
 import ConnectionsPage from './containers/ConnectionPage';
-import DialPage from './containers/DialPage';
 import ScriptsPage from './containers/ScriptsPage';
 import HeaderContainer from './containers/HeaderContainer';
 import SidebarButtons from './containers/Sidebar';
@@ -31,12 +29,8 @@ const Routes = () => (
       <Box gridArea="main" background="light-2">
         <Main pad="small">
           <Switch>
-            <ConnectedRoute path={routes.SCRIPTS} component={ScriptsPage} />
-            <Route path={routes.CONNECTIONS}>
-              <ConnectionsPage />
-            </Route>
-            <ConnectedRoute path={routes.DIAL} component={DialPage} />
-            <Redirect to={routes.CONNECTIONS} />
+            <Route path={routes.SCRIPTS} component={ScriptsPage} />
+            <Route path={routes.CONNECTIONS} component={ConnectionsPage} />
           </Switch>
         </Main>
       </Box>
