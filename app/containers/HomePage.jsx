@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Box, Form, FormField, TextInput } from 'grommet';
-import { configGetRequest, statusGetRequest } from '../actions/xapi';
 import { downloadConfigurationRequest } from '../actions/xml-files';
 import { putXmlRequest } from '../actions/put-xml';
 import Spinner from '../components/Spinner';
@@ -153,12 +152,6 @@ const HomePage = ({ host, password }) => {
             </button>
             <button
               className="btn btn-warning"
-              onClick={() => dispatch(statusGetRequest(host, 'Audio Microphones Mute'))}
-            >
-              Get Mute Status
-            </button>
-            <button
-              className="btn btn-warning"
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -200,12 +193,6 @@ const HomePage = ({ host, password }) => {
               }
             >
               Selfview mode off
-            </button>
-            <button
-              className="btn btn-warning"
-              onClick={() => dispatch(configGetRequest(host, 'Video Selfview Default Mode'))}
-            >
-              Get Selfview Status
             </button>
             <button
               className="btn btn-warning"
@@ -251,12 +238,6 @@ const HomePage = ({ host, password }) => {
             </button>
             <button
               className="btn btn-warning"
-              onClick={() => dispatch(statusGetRequest(host, 'Conference DoNotDisturb'))}
-            >
-              Get Do not Disturb Status
-            </button>
-            <button
-              className="btn btn-warning"
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -292,12 +273,6 @@ const HomePage = ({ host, password }) => {
               }
             >
               Call Resume
-            </button>
-            <button
-              className="btn btn-warning"
-              onClick={() => dispatch(statusGetRequest(host, 'Call'))}
-            >
-              Get Call Status
             </button>
             <button
               className="btn btn-warning"
