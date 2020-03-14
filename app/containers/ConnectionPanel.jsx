@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import ConnectionPanelHeader from './ConnectionPanelHeader';
 import ConnectionStatus from '../constants/connection-status';
-import HomePage from './HomePage';
+import Connection from './Connection';
 
 const usePrev = (value) => {
   const ref = useRef();
@@ -35,7 +35,7 @@ const ConnectionPanel = ({ connection }) => {
       }
     >
       <Box pad="medium" background="light-2">
-        <HomePage host={connection.host} />
+        <Connection host={connection.host} />
       </Box>
     </AccordionPanel>
   );

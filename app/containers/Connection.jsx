@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Box, Form, FormField, TextInput } from 'grommet';
+import { Button, Box } from 'grommet';
 import { downloadConfigurationRequest } from '../actions/xml-files';
 import { putXmlRequest } from '../actions/put-xml';
 import Spinner from '../components/Spinner';
@@ -8,11 +8,11 @@ import ConnectionStatus from '../constants/connection-status';
 import { connectionStatusSelector } from '../selectors/connections';
 import Statuses from './Statuses';
 import { connectRequest } from '../actions/connection';
+import DialForm from './DialForm';
+import DmtfForm from './DtmfForm';
 
-const HomePage = ({ host, password }) => {
+const Connection = ({ host, password }) => {
   const dispatch = useDispatch();
-  const [dial, setDial] = useState('');
-  const [dtmf, setDtmf] = useState('');
   const connectionStatus = useSelector(connectionStatusSelector(host));
 
   return (
@@ -25,73 +25,15 @@ const HomePage = ({ host, password }) => {
       ) : (
         <>
           <Statuses host={host} />
-          <Form
-            onSubmit={(event) => {
-              event.preventDefault();
-              dispatch(
-                putXmlRequest(
-                  host,
-                  `
-        <Command>
-        <Dial>
-            <Number>${dial}</Number>
-          </Dial>
-        </Command>`,
-                ),
-              );
-            }}
-          >
-            <Box direction="column" align="center" margin="medium">
-              <FormField label="Dial">
-                <TextInput
-                  placeholder="5XXXXX, 91XXX-XXX-XXXX"
-                  value={dial}
-                  onChange={({ target: { value } }) => setDial({ dial: value })}
-                />
-              </FormField>
-              <Button primary type="submit" label="Dial Number" />
-            </Box>
-          </Form>
-          <Form
-            onSubmit={(event) => {
-              event.preventDefault();
-              dispatch(
-                putXmlRequest(
-                  host,
-                  `
-      <Command>
-        <Call>
-          <DTMFSend>
-            <DTMFString>${dtmf}</DTMFString>
-          </DTMFSend>
-        </Call>
-      </Command>
-             `,
-                ),
-              );
-            }}
-          >
-            <Box direction="column" align="center" margin="medium">
-              <FormField label="DTMF">
-                <TextInput
-                  placeholder="1XXXXXXXXXX#"
-                  value={dtmf}
-                  onChange={({ target: { value } }) => setDtmf({ dtmf: value })}
-                />
-              </FormField>
-              <Button primary type="submit" label="Send DMTF" />
-            </Box>
-          </Form>
+          <DialForm host={host} />
+          <DmtfForm host={host} />
 
           <div>
             <Button
-              className="btn btn-danger"
               onClick={() => dispatch(downloadConfigurationRequest(host))}
-            >
-              Download Configuration
-            </Button>
-            <button
-              className="btn btn-warning"
+              label="Download Configuration"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -106,11 +48,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Disconnect Call
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Disconnect Call"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -127,11 +67,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Mute
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Mute"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -147,11 +85,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Unmute
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Unmute"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -169,11 +105,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Selfview mode on
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Selfview mode on"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -191,11 +125,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Selfview mode off
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Selfview mode off"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -212,11 +144,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Do not Disturb Status on
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Do not Disturb Status on"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -233,11 +163,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Do not Disturb Status off
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Do not Disturb Status off"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -252,11 +180,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Call Hold
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Call Hold"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -271,11 +197,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Call Resume
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Call Resume"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -290,11 +214,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Dial 1
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Dial 1"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -311,11 +233,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Send 1#
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Send 1#"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -330,11 +250,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Dial 123@connect.accenture.com
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Dial 123@connect.accenture.com"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -349,11 +267,9 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Accept Call
-            </button>
-            <button
-              className="btn btn-warning"
+              label="Accept Call"
+            />
+            <Button
               onClick={() =>
                 dispatch(
                   putXmlRequest(
@@ -368,9 +284,8 @@ const HomePage = ({ host, password }) => {
                   ),
                 )
               }
-            >
-              Disconnect Call
-            </button>
+              label="Disconnect Call"
+            />
           </div>
         </>
       )}
@@ -378,4 +293,4 @@ const HomePage = ({ host, password }) => {
   );
 };
 
-export default HomePage;
+export default Connection;

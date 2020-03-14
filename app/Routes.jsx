@@ -6,7 +6,6 @@ import routes from './constants/routes';
 import App from './containers/App';
 import ConnectionsPage from './containers/ConnectionPage';
 import DialPage from './containers/DialPage';
-import CommandsPage from './containers/HomePage';
 import ScriptsPage from './containers/ScriptsPage';
 import HeaderContainer from './containers/HeaderContainer';
 import SidebarButtons from './containers/Sidebar';
@@ -36,7 +35,6 @@ const Routes = () => (
             <Route path={routes.CONNECTIONS}>
               <ConnectionsPage />
             </Route>
-            <ConnectedRoute path={routes.COMMANDS} component={CommandsPage} />
             <ConnectedRoute path={routes.DIAL} component={DialPage} />
             <Redirect to={routes.CONNECTIONS} />
           </Switch>
