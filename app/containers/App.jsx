@@ -1,36 +1,24 @@
 // @flow
 import * as React from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addConnections } from '../actions/connections';
 import xcom from '../assets/xcom.csv';
+import script1 from '../assets/script1.xml';
 import 'filepond/dist/filepond.min.css';
+import { addScript } from '../actions/scripts';
 
 const StyledApp = styled.div`
   width: 100vw;
   height: 100vh;
 `;
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+const App = ({ children }) => {
+  const dispatch = useDispatch();
+  dispatch(addConnections(xcom));
+  dispatch(addScript(script1));
 
-    this.props.addConnections(xcom);
-  }
-
-  render() {
-    const { children } = this.props;
-    return <StyledApp>{children}</StyledApp>;
-  }
-}
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = {
-  addConnections,
+  return <StyledApp>{children}</StyledApp>;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App);
+export default App;

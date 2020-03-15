@@ -1,0 +1,86 @@
+<Script name="Script 1" apiVersion="4" automationXmlVersion="1">
+
+  <Steps>
+    <Step type="feedback" name="Setup Feedbacks">
+      <Feedbacks>
+        <Feedback label="Mute">
+          Status/Video/Selfview/Mode
+        </Feedback>
+      </Feedbacks>
+    </Step>
+
+    <Step type="putxml" name="Enable selfview" description="Enable selfview from the touchpad or remote">
+      <Configuration>
+        <Video>
+          <Selfview>
+            <Default>
+              <Mode>On</Mode>
+            </Default>
+          </Selfview>
+        </Video>
+      </Configuration>
+    </Step>
+
+    <Step type="putxml" name="Disable selfview" description="Disable selfview from the touchpad or remote">
+      <Configuration>
+        <Video>
+          <Selfview>
+            <Default>
+              <Mode>Off</Mode>
+            </Default>
+          </Selfview>
+        </Video>
+      </Configuration>
+    </Step>
+
+    <Step type="manual" name="Use the camera control to toggle between zoom in and zoom out" description="Use the camera control to toggle between zoom in and zoom out">
+    </Step>
+
+
+    <Step type="putxml" name="Set do not disturb off" description="Change the status of the endpoint from Available to Do Not Disturb">
+      <Command>
+        <Conference>
+          <DoNotDisturb>
+            <Deactivate>
+            </Deactivate>
+          </DoNotDisturb>
+        </Conference>
+      </Command>
+    </Step>
+
+    <Step type="putxml" name="Dial 1" description="Place a call to the endpoint from any other endpoint">
+      <Command>
+        <Dial>
+          <Number>1</Number>
+        </Dial>
+      </Command>
+    </Step>
+
+    <Step type="putxml" name="Set do not disturb on">
+      <Command>
+        <Conference>
+          <DoNotDisturb>
+            <Activate>
+            </Activate>
+          </DoNotDisturb>
+        </Conference>
+      </Command>
+    </Step>
+
+    <!-- <Step type="putxml" name="Dial 917039480488" description="Dial out to 917039480488">
+      <Command>
+        <Dial>
+          <Number>9170394804882</Number>
+        </Dial>
+      </Command>
+    </Step> -->
+
+    <Step type="putxml" name="Disconnect Call">
+      <Command>
+        <Call>
+          <Disconnect></Disconnect>
+        </Call>
+      </Command>
+    </Step>
+  </Steps>
+</Script>

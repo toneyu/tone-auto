@@ -174,6 +174,15 @@ export default merge.smart(baseConfig, {
           skipEmptyLines: true,
         },
       },
+      {
+        test: /\.xml$/,
+        loader: 'xml-loader',
+        options: {
+          explicitArray: false,
+          trim: true,
+          normalize: true,
+        },
+      },
     ],
   },
 

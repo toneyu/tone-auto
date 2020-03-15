@@ -1,18 +1,7 @@
 import * as jsxapi from 'jsxapi';
 // import normalizePath from 'jsxapi/lib/xapi/normalizePath.js';
 import { eventChannel } from 'redux-saga';
-import {
-  takeEvery,
-  all,
-  call,
-  cancel,
-  fork,
-  put,
-  race,
-  take,
-  takeLeading,
-  select,
-} from 'redux-saga/effects';
+import { takeEvery, all, call, cancel, fork, put, race, take, select } from 'redux-saga/effects';
 
 import {
   connectFailure,
@@ -23,19 +12,12 @@ import {
   DISCONNECT_SUCCESS,
 } from '../actions/connection';
 import {
-  SCRIPT_1_REQUEST,
-  SCRIPT_2_REQUEST,
-  SCRIPT_3_REQUEST,
-  SCRIPT_4_REQUEST,
-} from '../actions/scripts';
-import {
   COMMAND_REQUEST,
   CONFIG_GET_REQUEST,
   CONFIG_SET_REQUEST,
   STATUS_GET_REQUEST,
   STATUS_SET_REQUEST,
 } from '../actions/xapi';
-import { script1Saga, script2Saga, script3Saga, script4Saga } from './scripts';
 import { commandSaga, configGetSaga, configSetSaga, statusGetSaga, statusSetSaga } from './xapi';
 import {
   SETUP_FEEDBACK_REQUEST,
@@ -165,11 +147,6 @@ export function* xapiWatcher(xapi, host, password) {
   yield takeEveryHost(STATUS_SET_REQUEST, statusSetSaga);
   yield takeEveryHost(CONFIG_GET_REQUEST, configGetSaga);
   yield takeEveryHost(CONFIG_SET_REQUEST, configSetSaga);
-
-  yield takeLeading(SCRIPT_1_REQUEST, script1Saga, xapi);
-  yield takeLeading(SCRIPT_2_REQUEST, script2Saga, xapi);
-  yield takeLeading(SCRIPT_3_REQUEST, script3Saga, xapi);
-  yield takeLeading(SCRIPT_4_REQUEST, script4Saga, xapi);
 
   yield takeEvery(
     (action) => action.type === SETUP_FEEDBACK_REQUEST && action.host === host,

@@ -4,6 +4,7 @@ import { connectRouter } from 'connected-react-router';
 import connection from './connection';
 import statuses from './statuses';
 import feedbacks from './feedbacks';
+import scripts from './scripts';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
@@ -11,5 +12,6 @@ export default function createRootReducer(history: History) {
     connection,
     statuses,
     feedbacks,
+    scripts,
   });
 }

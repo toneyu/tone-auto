@@ -1,6 +1,6 @@
 import { Box, Grid, Main } from 'grommet';
 import React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
 import routes from './constants/routes';
 import App from './containers/App';
 import ConnectionsPage from './containers/ConnectionPage';
@@ -31,6 +31,7 @@ const Routes = () => (
           <Switch>
             <Route path={routes.SCRIPTS} component={ScriptsPage} />
             <Route path={routes.CONNECTIONS} component={ConnectionsPage} />
+            <Redirect to={routes.CONNECTIONS} />
           </Switch>
         </Main>
       </Box>

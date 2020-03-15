@@ -297,6 +297,7 @@
     "ssh2": "^0.8.5",
     "styled-components": "^4.4.1",
     "typeface-roboto": "0.0.75",
+    "xml-loader": "^1.2.1",
     "xml2js": "^0.4.23"
   },
   "optionalDependencies": {
