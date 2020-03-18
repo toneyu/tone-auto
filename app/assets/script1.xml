@@ -10,27 +10,31 @@
     </Step>
 
     <Step type="putxml" name="Enable selfview" description="Enable selfview from the touchpad or remote">
-      <Configuration>
-        <Video>
-          <Selfview>
-            <Default>
-              <Mode>On</Mode>
-            </Default>
-          </Selfview>
-        </Video>
-      </Configuration>
+      <putxml>
+        <Configuration>
+          <Video>
+            <Selfview>
+              <Default>
+                <Mode>On</Mode>
+              </Default>
+            </Selfview>
+          </Video>
+        </Configuration>
+      </putxml>
     </Step>
 
     <Step type="putxml" name="Disable selfview" description="Disable selfview from the touchpad or remote">
-      <Configuration>
-        <Video>
-          <Selfview>
-            <Default>
-              <Mode>Off</Mode>
-            </Default>
-          </Selfview>
-        </Video>
-      </Configuration>
+      <putxml>
+        <Configuration>
+          <Video>
+            <Selfview>
+              <Default>
+                <Mode>Off</Mode>
+              </Default>
+            </Selfview>
+          </Video>
+        </Configuration>
+      </putxml>
     </Step>
 
     <Step type="manual" name="Use the camera control to toggle between zoom in and zoom out" description="Use the camera control to toggle between zoom in and zoom out">
@@ -38,33 +42,39 @@
 
 
     <Step type="putxml" name="Set do not disturb off" description="Change the status of the endpoint from Available to Do Not Disturb">
-      <Command>
-        <Conference>
-          <DoNotDisturb>
-            <Deactivate>
-            </Deactivate>
-          </DoNotDisturb>
-        </Conference>
-      </Command>
+      <putxml>
+        <Command>
+          <Conference>
+            <DoNotDisturb>
+              <Deactivate>
+              </Deactivate>
+            </DoNotDisturb>
+          </Conference>
+        </Command>
+      </putxml>
     </Step>
 
     <Step type="putxml" name="Dial 1" description="Place a call to the endpoint from any other endpoint">
-      <Command>
-        <Dial>
-          <Number>1</Number>
-        </Dial>
-      </Command>
+      <putxml>
+        <Command>
+          <Dial>
+            <Number>1</Number>
+          </Dial>
+        </Command>
+      </putxml>
     </Step>
 
     <Step type="putxml" name="Set do not disturb on">
-      <Command>
-        <Conference>
-          <DoNotDisturb>
-            <Activate>
-            </Activate>
-          </DoNotDisturb>
-        </Conference>
-      </Command>
+      <putxml>
+        <Command>
+          <Conference>
+            <DoNotDisturb>
+              <Activate>
+              </Activate>
+            </DoNotDisturb>
+          </Conference>
+        </Command>
+      </putxml>
     </Step>
 
     <!-- <Step type="putxml" name="Dial 917039480488" description="Dial out to 917039480488">
@@ -76,11 +86,13 @@
     </Step> -->
 
     <Step type="putxml" name="Disconnect Call">
-      <Command>
-        <Call>
-          <Disconnect></Disconnect>
-        </Call>
-      </Command>
+      <putxml>
+        <Command>
+          <Call>
+            <Disconnect></Disconnect>
+          </Call>
+        </Command>
+      </putxml>
     </Step>
   </Steps>
 </Script>

@@ -31,7 +31,8 @@ const Routes = () => (
           <Switch>
             <Route path={routes.SCRIPTS} component={ScriptsPage} />
             <Route path={routes.CONNECTIONS} component={ConnectionsPage} />
-            <Redirect to={routes.CONNECTIONS} />
+            <Redirect to={routes.SCRIPTS} />
+            {/* <Redirect to={routes.CONNECTIONS} /> */}
           </Switch>
         </Main>
       </Box>

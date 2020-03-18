@@ -5,6 +5,7 @@ import connection from './connection';
 import statuses from './statuses';
 import feedbacks from './feedbacks';
 import scripts from './scripts';
+import scriptProcess from './script-process';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
@@ -13,5 +14,6 @@ export default function createRootReducer(history: History) {
     statuses,
     feedbacks,
     scripts,
+    scriptProcess,
   });
 }
