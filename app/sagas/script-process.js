@@ -1,3 +1,4 @@
+import { parseStringPromise } from 'xml2js';
 import { takeLeading, select, put, race, take } from 'redux-saga/effects';
 import { START_SCRIPT_PROCESS, updateProgress } from '../actions/script-process';
 import { scriptNameProcessSelector } from '../selectors/script-progress';
@@ -27,10 +28,15 @@ function* scriptProcessSaga() {
         });
         if (success) {
           console.log(success);
-          yield put(updateProgress(step.name, StepProgress.ENDED_OK));
+          const log = yield parseStringPromise(success.response.data, {
+            explicitArray: false,
+            trim: true,
+            normalize: true,
+          });
+          yield put(updateProgress(step.name, StepProgress.ENDED_OK, JSON.stringify(log)));
         } else {
           console.log(failure);
-          yield put(updateProgress(step.name, StepProgress.ENDED_ERROR));
+          yield put(updateProgress(step.name, StepProgress.ENDED_ERROR, failure.error.message));
           throw failure;
         }
         break;
@@ -39,7 +45,6 @@ function* scriptProcessSaga() {
         break;
     }
   }
-  console.log(steps);
 }
 
 export default function*() {

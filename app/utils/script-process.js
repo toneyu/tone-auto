@@ -14,7 +14,10 @@ const builder = new xml2js.Builder();
  */
 
 export const getStep = (script, index) => {
-  const { Step } = script.Script.Steps;
+  let { Step } = script.Script.Steps;
+  if (!Array.isArray(Step)) {
+    Step = [Step];
+  }
   const step = Step[index];
 
   let payload;
@@ -34,7 +37,10 @@ export const getStep = (script, index) => {
 };
 
 export const getSteps = (script) => {
-  const { Step: steps } = script.Script.Steps;
+  let { Step: steps } = script.Script.Steps;
+  if (!Array.isArray(steps)) {
+    steps = [steps];
+  }
 
   return steps.map((_, index) => {
     return getStep(script, index);

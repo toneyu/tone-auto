@@ -6,6 +6,10 @@ const scriptProcessAdapter = createEntityAdapter({
   selectId: (step) => step.name,
 });
 
+const logsAdapter = createEntityAdapter({
+  selectId: (logEntity) => logEntity.timestamp,
+});
+
 export default (
   state = scriptProcessAdapter.getInitialState({
     isLoaded: false,
@@ -23,6 +27,7 @@ export default (
           action.stepNames.map((stepName) => ({
             name: stepName,
             progress: StepProgress.NOT_STARTED,
+            logs: logsAdapter.getInitialState(),
           })),
         ),
         isLoaded: true,
@@ -33,7 +38,13 @@ export default (
     case UPDATE_PROGRESS: {
       return scriptProcessAdapter.updateOne(state, {
         id: action.stepName,
-        changes: { progress: action.progress },
+        changes: {
+          progress: action.progress,
+          logs: logsAdapter.addOne(state.entities[action.stepName].logs, {
+            timestamp: action.timestamp,
+            log: action.log,
+          }),
+        },
       });
     }
     default:

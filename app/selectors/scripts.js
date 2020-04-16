@@ -20,12 +20,18 @@ export const scriptLoadedSelector = (state) => state.scriptProcess.isLoaded;
 export const loadedScriptNameSelector = (state) => state.scriptProcess.scriptName;
 
 export const loadedStepNamesSelector = (state) => {
-  const steps = state.scripts.entities[state.scriptProcess.scriptName]?.Script.Steps.Step;
+  let steps = state.scripts.entities[state.scriptProcess.scriptName]?.Script.Steps.Step;
+  if (!Array.isArray(steps)) {
+    steps = [steps];
+  }
   return steps ? steps.map((step) => step.$.name) : undefined;
 };
 
 export const stepNamesSelector = (scriptName) => (state) => {
-  const steps = state.scripts.entities[scriptName]?.Script.Steps.Step;
+  let steps = state.scripts.entities[scriptName]?.Script.Steps.Step;
+  if (!Array.isArray(steps)) {
+    steps = [steps];
+  }
   return steps ? steps.map((step) => step.$.name) : undefined;
 };
 
