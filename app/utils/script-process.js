@@ -20,7 +20,10 @@ export const getStep = (script, index) => {
   let payload;
   const { type } = step.$;
   if (type === 'putxml') {
-    payload = builder.buildObject(step.putxml);
+    payload = {
+      host: step.Host,
+      putxml: builder.buildObject(step.putxml),
+    };
   } else if (type === 'feedbacks') {
     payload = { label: step.Feedback.$.label, path: step.Feedback._ };
   }
@@ -28,4 +31,12 @@ export const getStep = (script, index) => {
     ...step.$,
     payload,
   };
+};
+
+export const getSteps = (script) => {
+  const { Step: steps } = script.Script.Steps;
+
+  return steps.map((_, index) => {
+    return getStep(script, index);
+  });
 };

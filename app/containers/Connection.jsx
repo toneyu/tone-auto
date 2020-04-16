@@ -278,7 +278,7 @@ const Connection = ({ host, password }) => {
         <Command>
           <Call>
             <Disconnect></Disconnect>
-          </Call>
+    -      </Call>
         </Command>
                `,
                   ),

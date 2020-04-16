@@ -1,8 +1,8 @@
 import shortid from 'shortid';
 
-export const PUT_XML_REQUEST = 'put-xml/PUTX_ML_REQUEST';
-export const PUT_XML_SUCCESS = 'put-xml/PUTX_ML_SUCCESS';
-export const PUT_XML_FAILURE = 'put-xml/PUTX_ML_FAILURE';
+export const PUT_XML_REQUEST = 'put-xml/PUT_XML_REQUEST';
+export const PUT_XML_SUCCESS = 'put-xml/PUT_XML_SUCCESS';
+export const PUT_XML_FAILURE = 'put-xml/PUT_XML_FAILURE';
 
 export const putXmlRequest = (host, body) => ({
   type: PUT_XML_REQUEST,

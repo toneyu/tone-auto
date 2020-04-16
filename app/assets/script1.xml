@@ -1,15 +1,16 @@
 <Script name="Script 1" apiVersion="4" automationXmlVersion="1">
 
   <Steps>
-    <Step type="feedback" name="Setup Feedbacks">
+    <!-- <Step type="feedback" name="Setup Feedbacks">
       <Feedbacks>
         <Feedback label="Mute">
           Status/Video/Selfview/Mode
         </Feedback>
       </Feedbacks>
-    </Step>
+    </Step> -->
 
     <Step type="putxml" name="Enable selfview" description="Enable selfview from the touchpad or remote">
+      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Configuration>
           <Video>
@@ -24,6 +25,7 @@
     </Step>
 
     <Step type="putxml" name="Disable selfview" description="Disable selfview from the touchpad or remote">
+      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Configuration>
           <Video>
@@ -37,11 +39,12 @@
       </putxml>
     </Step>
 
-    <Step type="manual" name="Use the camera control to toggle between zoom in and zoom out" description="Use the camera control to toggle between zoom in and zoom out">
-    </Step>
+    <!-- <Step type="manual" name="Use the camera control to toggle between zoom in and zoom out" description="Use the camera control to toggle between zoom in and zoom out">
+    </Step> -->
 
 
     <Step type="putxml" name="Set do not disturb off" description="Change the status of the endpoint from Available to Do Not Disturb">
+      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
           <Conference>
@@ -55,6 +58,7 @@
     </Step>
 
     <Step type="putxml" name="Dial 1" description="Place a call to the endpoint from any other endpoint">
+      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
           <Dial>
@@ -65,6 +69,7 @@
     </Step>
 
     <Step type="putxml" name="Set do not disturb on">
+      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
           <Conference>
@@ -86,6 +91,7 @@
     </Step> -->
 
     <Step type="putxml" name="Disconnect Call">
+      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
           <Call>

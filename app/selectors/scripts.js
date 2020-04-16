@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getStep } from '../utils/script-process';
+import { getStep, getSteps } from '../utils/script-process';
 
 export const scriptNamesSelector = (state) => state.scripts.ids;
 
@@ -22,4 +22,13 @@ export const loadedScriptNameSelector = (state) => state.scriptProcess.scriptNam
 export const loadedStepNamesSelector = (state) => {
   const steps = state.scripts.entities[state.scriptProcess.scriptName]?.Script.Steps.Step;
   return steps ? steps.map((step) => step.$.name) : undefined;
+};
+
+export const stepNamesSelector = (scriptName) => (state) => {
+  const steps = state.scripts.entities[scriptName]?.Script.Steps.Step;
+  return steps ? steps.map((step) => step.$.name) : undefined;
+};
+
+export const stepsSelector = (scriptName) => (state) => {
+  return getSteps(state.scripts.entities[scriptName]);
 };

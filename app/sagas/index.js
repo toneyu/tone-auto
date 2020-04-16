@@ -4,7 +4,8 @@ import connection from './connection';
 import files from './files';
 import xmlFiles from './xml-files';
 import putXml from './put-xml';
+import scriptProcess from './script-process';
 
 export default function* rootSaga() {
-  yield all([connection(), files(), xmlFiles(), putXml()]);
+  yield all([connection(), files(), xmlFiles(), putXml(), scriptProcess()]);
 }

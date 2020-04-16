@@ -5,3 +5,10 @@ export const FeedbackStatus = {
   CONNECTING: 'CONNECTING',
   FAILED: 'FAILED',
 };
+
+export const StepProgress = {
+  NOT_STARTED: 'NOT_STARTED',
+  RUNNING: 'RUNNING',
+  ENDED_OK: 'ENDED_OK',
+  ENDED_ERROR: 'ENDED_ERROR',
+};

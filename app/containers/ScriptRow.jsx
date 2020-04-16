@@ -2,12 +2,13 @@ import React from 'react';
 import { TableRow, TableCell, Button, Text } from 'grommet';
 import { CirclePlay, Download } from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { scriptDescriptionSelector } from '../selectors/scripts';
+import { scriptDescriptionSelector, stepNamesSelector } from '../selectors/scripts';
 import { loadScriptProcess } from '../actions/script-process';
 
 const ScriptRow = ({ scriptName }) => {
   const dispatch = useDispatch();
   const description = useSelector(scriptDescriptionSelector(scriptName));
+  const stepNames = useSelector(stepNamesSelector(scriptName));
 
   return (
     <TableRow>
@@ -21,7 +22,7 @@ const ScriptRow = ({ scriptName }) => {
       <TableCell>
         <Button
           icon={<CirclePlay color="brand" />}
-          onClick={() => dispatch(loadScriptProcess(scriptName))}
+          onClick={() => dispatch(loadScriptProcess(scriptName, stepNames))}
         />
       </TableCell>
     </TableRow>
