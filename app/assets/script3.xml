@@ -9,86 +9,42 @@
       </Feedbacks>
     </Step> -->
 
-    <Step type="putxml" name="Enable selfview" description="Enable selfview from the touchpad or remote">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
-      <putxml>
-        <Configuration>
-          <Video>
-            <Selfview>
-              <Default>
-                <Mode>On</Mode>
-              </Default>
-            </Selfview>
-          </Video>
-        </Configuration>
-      </putxml>
-    </Step>
 
-    <Step type="putxml" name="Disable selfview" description="Disable selfview from the touchpad or remote">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
-      <putxml>
-        <Configuration>
-          <Video>
-            <Selfview>
-              <Default>
-                <Mode>Off</Mode>
-              </Default>
-            </Selfview>
-          </Video>
-        </Configuration>
-      </putxml>
-    </Step>
-
-    <!-- <Step type="manual" name="Use the camera control to toggle between zoom in and zoom out" description="Use the camera control to toggle between zoom in and zoom out">
-    </Step> -->
-
-
-    <Step type="putxml" name="Set do not disturb off" description="Change the status of the endpoint from Available to Do Not Disturb">
+    <Step type="putxml" name="Mute on">
       <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
-          <Conference>
-            <DoNotDisturb>
-              <Deactivate>
-              </Deactivate>
-            </DoNotDisturb>
-          </Conference>
+          <Audio>
+            <Microphones>
+              <Mute>
+              </Mute>
+            </Microphones>
+          </Audio>
         </Command>
       </putxml>
     </Step>
 
-    <Step type="putxml" name="Dial 1" description="Place a call to the endpoint from any other endpoint">
+    <Step type="putxml" name="Unmute">
       <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
-          <Dial>
-            <Number>1</Number>
-          </Dial>
+          <Audio>
+            <Microphones>
+              <Unmute>
+              </Unmute>
+            </Microphones>
+          </Audio>
         </Command>
       </putxml>
     </Step>
 
-    <Step type="putxml" name="Set do not disturb on">
+    <Step type="putxml" name="Resume Call" description="Resume">
       <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
         <Command>
-          <Conference>
-            <DoNotDisturb>
-              <Activate>
-              </Activate>
-            </DoNotDisturb>
-          </Conference>
-        </Command>
-      </putxml>
-    </Step>
-
-    <Step type="putxml" name="Dial 917039480488" description="Dial out to 917039480488">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
-      <putxml>
-        <Command>
-          <Dial>
-            <Number>9170394804882</Number>
-          </Dial>
+          <Call>
+            <Resume></Resume>
+          </Call>
         </Command>
       </putxml>
     </Step>

@@ -57,17 +57,6 @@
       </putxml>
     </Step>
 
-    <Step type="putxml" name="Dial 1" description="Place a call to the endpoint from any other endpoint">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
-      <putxml>
-        <Command>
-          <Dial>
-            <Number>1</Number>
-          </Dial>
-        </Command>
-      </putxml>
-    </Step>
-
     <Step type="putxml" name="Set do not disturb on">
       <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
       <putxml>
