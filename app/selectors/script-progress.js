@@ -1,12 +1,17 @@
-export const progressSelector = (stepName) => (state) =>
-  state.scriptProcess.entities[stepName].progress;
+export const progressSelector = (processId, stepName) => (state) =>
+  state.scriptProcess.entities[processId].entities[stepName].progress;
 
-export const scriptNameProcessSelector = (state) => state.scriptProcess.scriptName;
+export const scriptNameProcessSelector = (processId) => (state) =>
+  state.scriptProcess.entities[processId].scriptName;
 
-export const stepLogsSelector = (stepName) => (state) =>
-  state.scriptProcess.entities[stepName].logs.ids.map(
-    (id) => state.scriptProcess.entities[stepName].logs.entities[id].log,
+export const stepLogEntitiesSelector = (processId, stepName) => (state) =>
+  state.scriptProcess.entities[processId].entities[stepName].logs.ids.map(
+    (id) => state.scriptProcess.entities[processId].entities[stepName].logs.entities[id],
   );
 
-export const stepsProcessSelector = (state) =>
-  state.scriptProcess.ids.map((id) => state.scriptProcess.entities[id]);
+export const stepsProcessSelector = (processId) => (state) =>
+  state.scriptProcess.entities[processId].ids.map(
+    (id) => state.scriptProcess.entities[processId].entities[id],
+  );
+
+export const processesIdsSelector = (state) => state.scriptProcess.ids;

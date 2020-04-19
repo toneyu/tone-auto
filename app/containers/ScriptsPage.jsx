@@ -3,12 +3,11 @@ import React from 'react';
 import { Table, TableHeader, TableRow, TableCell, TableBody, Box } from 'grommet';
 import { useSelector } from 'react-redux';
 import ScriptRow from './ScriptRow';
-import { scriptNamesSelector, scriptLoadedSelector } from '../selectors/scripts';
-import ScriptProcess from './ScriptProcess';
+import { scriptNamesSelector } from '../selectors/scripts';
+import Processes from './Processes';
 
 const ScriptsPage = () => {
   const scriptNames = useSelector(scriptNamesSelector);
-  const scriptLoaded = useSelector(scriptLoadedSelector);
 
   return (
     <Box>
@@ -35,7 +34,7 @@ const ScriptsPage = () => {
           ))}
         </TableBody>
       </Table>
-      {scriptLoaded && <ScriptProcess />}
+      <Processes />
     </Box>
   );
 };

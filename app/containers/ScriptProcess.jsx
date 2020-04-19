@@ -9,16 +9,20 @@ import ScriptStep from './ScriptStep';
 import { startScriptProcess } from '../actions/script-process';
 import { stepsProcessSelector, scriptNameProcessSelector } from '../selectors/script-progress';
 
-const ScriptProcess = () => {
-  const stepNames = useSelector(loadedStepNamesSelector);
+const ScriptProcess = ({ processId }) => {
+  const stepNames = useSelector(loadedStepNamesSelector(processId));
   const dispatch = useDispatch();
-  const steps = useSelector(stepsProcessSelector);
-  const scriptName = useSelector(scriptNameProcessSelector);
+  const steps = useSelector(stepsProcessSelector(processId));
+  const scriptName = useSelector(scriptNameProcessSelector(processId));
 
   return (
     <Box>
       <Nav direction="row" background="brand" pad="medium">
-        <Anchor icon={<Play />} hoverIndicator onClick={() => dispatch(startScriptProcess())} />
+        <Anchor
+          icon={<Play />}
+          hoverIndicator
+          onClick={() => dispatch(startScriptProcess(processId))}
+        />
         <Anchor
           icon={<Download />}
           hoverIndicator
@@ -46,7 +50,7 @@ const ScriptProcess = () => {
         <Header>Steps</Header>
         <Box>
           {stepNames.map((stepName, stepIndex) => (
-            <ScriptStep stepIndex={stepIndex} key={stepName} />
+            <ScriptStep processId={processId} stepIndex={stepIndex} key={stepName} />
           ))}
         </Box>
       </Box>

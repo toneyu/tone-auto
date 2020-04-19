@@ -7,8 +7,8 @@ import { putXmlRequest, PUT_XML_SUCCESS, PUT_XML_FAILURE } from '../actions/put-
 import { StepProgress } from '../constants';
 import { connectionByNameSelector } from '../selectors/connections';
 
-function* scriptProcessSaga() {
-  const scriptName = yield select(scriptNameProcessSelector);
+function* scriptProcessSaga({ processId }) {
+  const scriptName = yield select(scriptNameProcessSelector(processId));
   const steps = yield select(stepsSelector(scriptName));
   const connectionByName = yield select(connectionByNameSelector);
 
@@ -18,7 +18,7 @@ function* scriptProcessSaga() {
         const { payload } = step;
         const connection = connectionByName[payload.host];
         if (!connection) {
-          yield put(updateProgress(step.name, StepProgress.ENDED_ERROR));
+          yield put(updateProgress(processId, step.name, StepProgress.ENDED_ERROR));
           throw new Error(`Connection host password ${payload.host} is missing`);
         }
         yield put(putXmlRequest(connectionByName[payload.host].host, payload.putxml));
@@ -33,10 +33,14 @@ function* scriptProcessSaga() {
             trim: true,
             normalize: true,
           });
-          yield put(updateProgress(step.name, StepProgress.ENDED_OK, JSON.stringify(log)));
+          yield put(
+            updateProgress(processId, step.name, StepProgress.ENDED_OK, JSON.stringify(log)),
+          );
         } else {
           console.log(failure);
-          yield put(updateProgress(step.name, StepProgress.ENDED_ERROR, failure.error.message));
+          yield put(
+            updateProgress(processId, step.name, StepProgress.ENDED_ERROR, failure.error.message),
+          );
           throw failure;
         }
         break;

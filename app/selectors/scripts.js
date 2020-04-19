@@ -6,21 +6,24 @@ export const scriptNamesSelector = (state) => state.scripts.ids;
 export const scriptDescriptionSelector = (scriptName) => (state) =>
   state.scripts.entities[scriptName]?.Script.$.description;
 
-export const createStepSelector = () =>
+export const createStepSelector = (processId) =>
   createSelector(
     [
-      (state) => state.scripts.entities[state.scriptProcess.scriptName],
+      (state) => state.scripts.entities[state.scriptProcess.entities[processId].scriptName],
       (_, stepIndex) => stepIndex,
     ],
     (script, stepIndex) => getStep(script, stepIndex),
   );
 
-export const scriptLoadedSelector = (state) => state.scriptProcess.isLoaded;
+export const scriptLoadedSelector = (processId) => (state) =>
+  state.scriptProcess.entities[processId].isLoaded;
 
-export const loadedScriptNameSelector = (state) => state.scriptProcess.scriptName;
+export const loadedScriptNameSelector = (processId) => (state) =>
+  state.scriptProcess.entities[processId].scriptName;
 
-export const loadedStepNamesSelector = (state) => {
-  let steps = state.scripts.entities[state.scriptProcess.scriptName]?.Script.Steps.Step;
+export const loadedStepNamesSelector = (processId) => (state) => {
+  let steps =
+    state.scripts.entities[state.scriptProcess.entities[processId].scriptName]?.Script.Steps.Step;
   if (!Array.isArray(steps)) {
     steps = [steps];
   }
