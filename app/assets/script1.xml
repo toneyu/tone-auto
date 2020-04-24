@@ -1,5 +1,9 @@
 <Script name="Script 1" apiVersion="4" automationXmlVersion="1">
 
+  <Hosts>
+    <Host>Host1</Host>
+  </Hosts>
+
   <Steps>
     <!-- <Step type="feedback" name="Setup Feedbacks">
       <Feedbacks>
@@ -10,7 +14,7 @@
     </Step> -->
 
     <Step type="putxml" name="Enable selfview" description="Enable selfview from the touchpad or remote">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host1</Host>
       <putxml>
         <Configuration>
           <Video>
@@ -25,7 +29,7 @@
     </Step>
 
     <Step type="putxml" name="Disable selfview" description="Disable selfview from the touchpad or remote">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host1</Host>
       <putxml>
         <Configuration>
           <Video>
@@ -44,7 +48,7 @@
 
 
     <Step type="putxml" name="Set do not disturb off" description="Change the status of the endpoint from Available to Do Not Disturb">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host1</Host>
       <putxml>
         <Command>
           <Conference>
@@ -58,7 +62,7 @@
     </Step>
 
     <Step type="putxml" name="Set do not disturb on">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host1</Host>
       <putxml>
         <Command>
           <Conference>
@@ -72,7 +76,7 @@
     </Step>
 
     <Step type="putxml" name="Dial 917039480488" description="Dial out to 917039480488">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host1</Host>
       <putxml>
         <Command>
           <Dial>
@@ -83,7 +87,7 @@
     </Step>
 
     <Step type="putxml" name="Disconnect Call">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host1</Host>
       <putxml>
         <Command>
           <Call>

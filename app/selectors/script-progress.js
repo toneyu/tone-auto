@@ -1,3 +1,5 @@
+import { createSelector } from '@reduxjs/toolkit';
+
 export const progressSelector = (processId, stepName) => (state) =>
   state.scriptProcess.entities[processId].entities[stepName].progress;
 
@@ -15,3 +17,10 @@ export const stepsProcessSelector = (processId) => (state) =>
   );
 
 export const processesIdsSelector = (state) => state.scriptProcess.ids;
+
+export const createProcessHostsByKeySelector = (processId) =>
+  createSelector(
+    [(state) => state.scriptProcess.entities[processId].hosts.entities],
+    (entities) =>
+      Object.values(entities).reduce((acc, entity) => ({ ...acc, [entity.key]: entity.host }), {}),
+  );
