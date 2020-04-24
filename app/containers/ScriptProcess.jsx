@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Header, Nav, Anchor } from 'grommet';
+import React, { useMemo } from 'react';
+import { Box, Header, Nav, Anchor, Menu } from 'grommet';
 import { Play, Download } from 'grommet-icons';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
@@ -7,13 +7,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loadedStepNamesSelector } from '../selectors/scripts';
 import ScriptStep from './ScriptStep';
 import { startScriptProcess } from '../actions/script-process';
-import { stepsProcessSelector, scriptNameProcessSelector } from '../selectors/script-progress';
+import {
+  stepsProcessSelector,
+  scriptNameProcessSelector,
+  createProcessHostsByKeySelector,
+} from '../selectors/script-progress';
+import { connectionEndpointsSelector } from '../selectors/connections';
 
 const ScriptProcess = ({ processId }) => {
+  const processHostsByKeySelector = useMemo(() => createProcessHostsByKeySelector(processId), []);
   const stepNames = useSelector(loadedStepNamesSelector(processId));
   const dispatch = useDispatch();
   const steps = useSelector(stepsProcessSelector(processId));
   const scriptName = useSelector(scriptNameProcessSelector(processId));
+  const hostsById = useSelector(processHostsByKeySelector);
+  const endpoints = useSelector(connectionEndpointsSelector);
+  console.log(hostsById);
 
   return (
     <Box>
@@ -35,6 +44,15 @@ const ScriptProcess = ({ processId }) => {
             );
             saveAs(new File([data], `${scriptName}.csv`, { type: 'text/csv' }));
           }}
+        />
+        <Menu
+          label="Menu"
+          items={endpoints.map((endpoint) => ({
+            label: endpoint,
+            onClick: () => {
+              console.log(endpoint);
+            },
+          }))}
         />
       </Nav>
       {/* <Box>
