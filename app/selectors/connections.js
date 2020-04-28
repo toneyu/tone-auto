@@ -1,3 +1,5 @@
+import { createSelector } from '@reduxjs/toolkit';
+
 export const connectionStatusSelector = (host) => (state) =>
   state.connection.entities[host]?.status;
 
@@ -9,3 +11,8 @@ export const connectionByNameSelector = (state) =>
     }),
     {},
   );
+
+export const connectionEndpointsSelector = createSelector(
+  [(state) => state.connection.ids, (state) => state.connection.entities],
+  (ids, entities) => ids.map((id) => entities[id].endpoint),
+);

@@ -41,3 +41,23 @@ export const stepNamesSelector = (scriptName) => (state) => {
 export const stepsSelector = (scriptName) => (state) => {
   return getSteps(state.scripts.entities[scriptName]);
 };
+
+export const scriptHostsSelector = (scriptName) => (state) => {
+  let hosts = state.scripts.entities[scriptName].Script.Hosts.Host;
+  if (!Array.isArray(hosts)) {
+    hosts = [hosts];
+  }
+  return hosts;
+};
+
+export const createHostKeysByStepNameSelector = (scriptName) =>
+  createSelector(
+    [
+      (state) => {
+        let steps = state.scripts.entities[scriptName].Script.Steps.Step;
+        if (!Array.isArray(steps)) steps = [steps];
+        return steps;
+      },
+    ],
+    (steps) => steps.reduce((acc, curr) => ({ ...acc, [curr.$.name]: curr.Host }), {}),
+  );

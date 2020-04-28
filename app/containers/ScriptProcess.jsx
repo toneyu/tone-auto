@@ -1,19 +1,37 @@
-import React from 'react';
-import { Box, Header, Nav, Anchor } from 'grommet';
+import React, { useMemo } from 'react';
+import { Box, Header, Nav, Anchor, Select, FormField } from 'grommet';
 import { Play, Download } from 'grommet-icons';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
 import { useSelector, useDispatch } from 'react-redux';
-import { loadedStepNamesSelector } from '../selectors/scripts';
+import {
+  loadedStepNamesSelector,
+  scriptHostsSelector,
+  createHostKeysByStepNameSelector,
+} from '../selectors/scripts';
 import ScriptStep from './ScriptStep';
-import { startScriptProcess } from '../actions/script-process';
-import { stepsProcessSelector, scriptNameProcessSelector } from '../selectors/script-progress';
+import { startScriptProcess, updateScriptHost } from '../actions/script-process';
+import {
+  stepsProcessSelector,
+  scriptNameProcessSelector,
+  createProcessHostsByKeySelector,
+} from '../selectors/script-progress';
+import { connectionEndpointsSelector } from '../selectors/connections';
 
 const ScriptProcess = ({ processId }) => {
-  const stepNames = useSelector(loadedStepNamesSelector(processId));
   const dispatch = useDispatch();
-  const steps = useSelector(stepsProcessSelector(processId));
+
+  const processHostsByKeySelector = useMemo(() => createProcessHostsByKeySelector(processId), []);
   const scriptName = useSelector(scriptNameProcessSelector(processId));
+  const hostKeysByStepNameSelector = useMemo(() => createHostKeysByStepNameSelector(scriptName));
+  const endpointsNameByKey = useSelector(processHostsByKeySelector);
+  const hostKeysByStepName = useSelector(hostKeysByStepNameSelector);
+  const stepNames = useSelector(loadedStepNamesSelector(processId));
+  const steps = useSelector(stepsProcessSelector(processId));
+  const hostsByKey = useSelector(processHostsByKeySelector);
+  const endpoints = useSelector(connectionEndpointsSelector);
+  const hostNames = useSelector(scriptHostsSelector(scriptName));
+  console.log(hostsByKey);
 
   return (
     <Box>
@@ -31,11 +49,23 @@ const ScriptProcess = ({ processId }) => {
               steps.map((step) => ({
                 'VC Tests': step.name,
                 results: step.logs.ids.map((id) => step.logs.entities[id].log).join('|'),
+                endpoint: endpointsNameByKey[hostKeysByStepName[step.name]],
               })),
             );
-            saveAs(new File([data], `${scriptName}.csv`, { type: 'text/csv' }));
+            saveAs(new File([data], `${scriptName}.csv`, { type: 'text/csv;charset=utf-8;' }));
           }}
         />
+        {hostNames.map((hostName) => (
+          <FormField label={hostName} key={hostName}>
+            <Select
+              placeholder={hostName}
+              options={endpoints}
+              value={hostsByKey[hostName] ?? ''}
+              size="small"
+              onChange={(name) => dispatch(updateScriptHost(hostName, processId, name.value))}
+            />
+          </FormField>
+        ))}
       </Nav>
       {/* <Box>
         <Header>Feedbacks:</Header>

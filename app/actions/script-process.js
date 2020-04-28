@@ -4,6 +4,8 @@ import shortid from 'shortid';
 export const LOAD_SCRIPT_PROCESS = 'script-process/LOAD_SCRIPT_PROCESS';
 export const UPDATE_PROGRESS = 'script-process/UPDATE_PROGRESS';
 export const START_SCRIPT_PROCESS = 'script-process/START_SCRIPT_PROCESS';
+export const UPDATE_SCRIPT_HOST = 'script-process/UPDATE_SCRIPT_HOST';
+export const SCRIPT_PROCESS_FAILURE = 'script-process/SCRIPT_PROCESS_FAILURE';
 
 export const loadScriptProcess = (scriptName, stepNames) => ({
   type: LOAD_SCRIPT_PROCESS,
@@ -24,4 +26,17 @@ export const updateProgress = (processId, stepName, progress, log) => ({
 export const startScriptProcess = (processId) => ({
   type: START_SCRIPT_PROCESS,
   processId,
+});
+
+export const updateScriptHost = (key, processId, host) => ({
+  type: UPDATE_SCRIPT_HOST,
+  key,
+  processId,
+  host,
+});
+
+export const scriptProcessFailure = (processId, error) => ({
+  type: SCRIPT_PROCESS_FAILURE,
+  processId,
+  error,
 });
