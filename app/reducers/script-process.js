@@ -1,5 +1,10 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
-import { LOAD_SCRIPT_PROCESS, UPDATE_PROGRESS } from '../actions/script-process';
+import {
+  LOAD_SCRIPT_PROCESS,
+  UPDATE_PROGRESS,
+  UPDATE_SCRIPT_HOST,
+  SCRIPT_PROCESS_FAILURE,
+} from '../actions/script-process';
 import { StepProgress } from '../constants';
 
 const proccessAdapter = createEntityAdapter();
@@ -10,6 +15,10 @@ const scriptProcessAdapter = createEntityAdapter({
 
 const logsAdapter = createEntityAdapter({
   selectId: (logEntity) => logEntity.timestamp,
+});
+
+const hostsAdapter = createEntityAdapter({
+  selectId: (entity) => entity.key,
 });
 
 export default (state = proccessAdapter.getInitialState(), action) => {
@@ -24,6 +33,7 @@ export default (state = proccessAdapter.getInitialState(), action) => {
             logs: logsAdapter.getInitialState(),
           })),
         ),
+        hosts: hostsAdapter.getInitialState(),
         scriptName: action.scriptName,
         stepIndex: undefined,
         id: action.processId,
@@ -45,6 +55,25 @@ export default (state = proccessAdapter.getInitialState(), action) => {
             ),
           },
         }),
+      });
+    }
+    case UPDATE_SCRIPT_HOST: {
+      return proccessAdapter.updateOne(state, {
+        id: action.processId,
+        changes: {
+          hosts: hostsAdapter.upsertOne(state.entities[action.processId].hosts, {
+            key: action.key,
+            host: action.host,
+          }),
+        },
+      });
+    }
+    case SCRIPT_PROCESS_FAILURE: {
+      return proccessAdapter.updateOne(state, {
+        id: action.processId,
+        changes: {
+          stepIndex: undefined,
+        },
       });
     }
     default:

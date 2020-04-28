@@ -1,5 +1,9 @@
 <Script name="Script 3" apiVersion="4" automationXmlVersion="1">
 
+  <Hosts>
+    <Host>Host A</Host>
+  </Hosts>
+
   <Steps>
     <!-- <Step type="feedback" name="Setup Feedbacks">
       <Feedbacks>
@@ -11,7 +15,7 @@
 
 
     <Step type="putxml" name="Mute on">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host A</Host>
       <putxml>
         <Command>
           <Audio>
@@ -25,7 +29,7 @@
     </Step>
 
     <Step type="putxml" name="Unmute">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host A</Host>
       <putxml>
         <Command>
           <Audio>
@@ -39,7 +43,7 @@
     </Step>
 
     <Step type="putxml" name="Resume Call" description="Resume">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host A</Host>
       <putxml>
         <Command>
           <Call>
@@ -50,7 +54,7 @@
     </Step>
 
     <Step type="putxml" name="Disconnect Call">
-      <Host>Chicago-161N-DEV-AMR-DX70-2</Host>
+      <Host>Host A</Host>
       <putxml>
         <Command>
           <Call>
