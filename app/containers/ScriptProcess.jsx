@@ -78,7 +78,7 @@ const ScriptProcess = ({ processId }) => {
       </Box> */}
       <Box>
         <Header>Steps</Header>
-        <Box>
+        <Box align="start">
           {stepNames.map((stepName, stepIndex) => (
             <ScriptStep processId={processId} stepIndex={stepIndex} key={stepName} />
           ))}
