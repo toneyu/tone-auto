@@ -24,3 +24,6 @@ export const createProcessHostsByKeySelector = (processId) =>
     (entities) =>
       Object.values(entities).reduce((acc, entity) => ({ ...acc, [entity.key]: entity.host }), {}),
   );
+
+export const hostNameSelector = (processId, host) => (state) =>
+  state.scriptProcess.entities[processId].hosts.entities[host]?.host;
