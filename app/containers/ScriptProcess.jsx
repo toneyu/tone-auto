@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Box, Header, Nav, Anchor, Select, FormField } from 'grommet';
-import { Play, Download } from 'grommet-icons';
+import { Box, Nav, Anchor, Select, FormField, Button, Heading } from 'grommet';
+import { Play, Download, Close } from 'grommet-icons';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,11 @@ import {
   createHostKeysByStepNameSelector,
 } from '../selectors/scripts';
 import ScriptStep from './ScriptStep';
-import { startScriptProcess, updateScriptHost } from '../actions/script-process';
+import {
+  startScriptProcess,
+  updateScriptHost,
+  deleteScriptProcess,
+} from '../actions/script-process';
 import {
   stepsProcessSelector,
   scriptNameProcessSelector,
@@ -35,7 +39,11 @@ const ScriptProcess = ({ processId }) => {
 
   return (
     <Box>
-      <Nav direction="row" background="brand" pad="medium">
+      <Nav align="center" direction="row" background="brand" pad="medium">
+        <Box>
+          <Heading>{scriptName}</Heading>
+          <Heading level="5">{`(Id: ${processId})`}</Heading>
+        </Box>
         <Anchor
           icon={<Play />}
           hoverIndicator
@@ -66,18 +74,23 @@ const ScriptProcess = ({ processId }) => {
             />
           </FormField>
         ))}
+        <Button
+          margin={{ marginLeft: 'auto' }}
+          icon={<Close />}
+          onClick={() => dispatch(deleteScriptProcess(processId))}
+        />
       </Nav>
       {/* <Box>
-        <Header>Feedbacks:</Header>
+        <Heading>Feedbacks:</Heading>
         <Box>
           <Box>
-            <Header>Feedback 1 Label</Header>
-            <Header>Feedback Progress</Header>
+            <Heading>Feedback 1 Label</Heading>
+            <Heading>Feedback Progress</Heading>
           </Box>
         </Box>
       </Box> */}
       <Box>
-        <Header>Steps</Header>
+        <Heading level="3">Steps</Heading>
         <Box align="start">
           {stepNames.map((stepName, stepIndex) => (
             <ScriptStep processId={processId} stepIndex={stepIndex} key={stepName} />

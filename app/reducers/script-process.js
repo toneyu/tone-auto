@@ -4,6 +4,7 @@ import {
   UPDATE_PROGRESS,
   UPDATE_SCRIPT_HOST,
   SCRIPT_PROCESS_FAILURE,
+  DELETE_SCRIPT_PROCESS,
 } from '../actions/script-process';
 import { StepProgress } from '../constants';
 
@@ -75,6 +76,9 @@ export default (state = proccessAdapter.getInitialState(), action) => {
           stepIndex: undefined,
         },
       });
+    }
+    case DELETE_SCRIPT_PROCESS: {
+      return proccessAdapter.removeOne(state, action.processId);
     }
     default:
       return state;

@@ -6,6 +6,7 @@ export const UPDATE_PROGRESS = 'script-process/UPDATE_PROGRESS';
 export const START_SCRIPT_PROCESS = 'script-process/START_SCRIPT_PROCESS';
 export const UPDATE_SCRIPT_HOST = 'script-process/UPDATE_SCRIPT_HOST';
 export const SCRIPT_PROCESS_FAILURE = 'script-process/SCRIPT_PROCESS_FAILURE';
+export const DELETE_SCRIPT_PROCESS = 'script-process/DELETE_SCRIPT_PROCESS';
 
 export const loadScriptProcess = (scriptName, stepNames) => ({
   type: LOAD_SCRIPT_PROCESS,
@@ -39,4 +40,9 @@ export const scriptProcessFailure = (processId, error) => ({
   type: SCRIPT_PROCESS_FAILURE,
   processId,
   error,
+});
+
+export const deleteScriptProcess = (processId) => ({
+  type: DELETE_SCRIPT_PROCESS,
+  processId,
 });

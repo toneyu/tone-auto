@@ -1,0 +1,100 @@
+<Script name="Script 4" apiVersion="4" automationXmlVersion="1">
+
+  <Hosts>
+    <Host>Host A</Host>
+  </Hosts>
+
+  <Steps>
+    <!-- <Step type="feedback" name="Setup Feedbacks">
+      <Feedbacks>
+        <Feedback label="Mute">
+          Status/Video/Selfview/Mode
+        </Feedback>
+      </Feedbacks>
+    </Step> -->
+
+    <Step type="putxml" name="Enable selfview" description="Enable selfview from the touchpad or remote">
+      <Host>Host A</Host>
+      <putxml>
+        <Configuration>
+          <Video>
+            <Selfview>
+              <Default>
+                <Mode>On</Mode>
+              </Default>
+            </Selfview>
+          </Video>
+        </Configuration>
+      </putxml>
+    </Step>
+
+    <Step type="putxml" name="Disable selfview" description="Disable selfview from the touchpad or remote">
+      <Host>Host A</Host>
+      <putxml>
+        <Configuration>
+          <Video>
+            <Selfview>
+              <Default>
+                <Mode>Off</Mode>
+              </Default>
+            </Selfview>
+          </Video>
+        </Configuration>
+      </putxml>
+    </Step>
+
+    <!-- <Step type="manual" name="Use the camera control to toggle between zoom in and zoom out" description="Use the camera control to toggle between zoom in and zoom out">
+    </Step> -->
+
+
+    <Step type="putxml" name="Set do not disturb off" description="Change the status of the endpoint from Available to Do Not Disturb">
+      <Host>Host A</Host>
+      <putxml>
+        <Command>
+          <Conference>
+            <DoNotDisturb>
+              <Deactivate>
+              </Deactivate>
+            </DoNotDisturb>
+          </Conference>
+        </Command>
+      </putxml>
+    </Step>
+
+    <Step type="putxml" name="Set do not disturb on">
+      <Host>Host A</Host>
+      <putxml>
+        <Command>
+          <Conference>
+            <DoNotDisturb>
+              <Activate>
+              </Activate>
+            </DoNotDisturb>
+          </Conference>
+        </Command>
+      </putxml>
+    </Step>
+
+    <Step type="putxml" name="Dial 917039480488" description="Dial out to 917039480488">
+      <Host>Host A</Host>
+      <putxml>
+        <Command>
+          <Dial>
+            <Number>9170394804882</Number>
+          </Dial>
+        </Command>
+      </putxml>
+    </Step>
+
+    <Step type="putxml" name="Disconnect Call">
+      <Host>Host A</Host>
+      <putxml>
+        <Command>
+          <Call>
+            <Disconnect></Disconnect>
+          </Call>
+        </Command>
+      </putxml>
+    </Step>
+  </Steps>
+</Script>
