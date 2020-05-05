@@ -7,8 +7,8 @@ import xcom from '../assets/xcom.csv';
 import script1 from '../assets/script1.xml';
 import script2 from '../assets/script2.xml';
 import script3 from '../assets/script3.xml';
+import { loadScriptSuccess } from '../actions/scripts';
 import 'filepond/dist/filepond.min.css';
-import { addScript } from '../actions/scripts';
 
 const StyledApp = styled.div`
   width: 100vw;
@@ -18,9 +18,7 @@ const StyledApp = styled.div`
 const App = ({ children }) => {
   const dispatch = useDispatch();
   dispatch(addConnections(xcom));
-  dispatch(addScript(script1));
-  dispatch(addScript(script2));
-  dispatch(addScript(script3));
+  dispatch(loadScriptSuccess([script1, script2, script3]));
 
   return <StyledApp>{children}</StyledApp>;
 };
