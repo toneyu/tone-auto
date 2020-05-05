@@ -1,6 +1,16 @@
 // import React, { Component } from 'react';
 import React from 'react';
-import { Table, TableHeader, TableRow, TableCell, TableBody, Box, Form, Button } from 'grommet';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableCell,
+  TableBody,
+  Box,
+  Form,
+  Button,
+  Grid,
+} from 'grommet';
 import { useSelector, useDispatch } from 'react-redux';
 import { Upload } from 'grommet-icons';
 import ScriptRow from './ScriptRow';
@@ -13,7 +23,7 @@ const ScriptsPage = () => {
   const scriptNames = useSelector(scriptNamesSelector);
 
   return (
-    <Box>
+    <Grid>
       <Box>
         <Form
           onSubmit={() => {
@@ -42,9 +52,6 @@ const ScriptsPage = () => {
               Description
             </TableCell>
             <TableCell scope="col" border="bottom">
-              Export
-            </TableCell>
-            <TableCell scope="col" border="bottom">
               Load
             </TableCell>
           </TableRow>
@@ -56,7 +63,7 @@ const ScriptsPage = () => {
         </TableBody>
       </Table>
       <Processes />
-    </Box>
+    </Grid>
   );
 };
 

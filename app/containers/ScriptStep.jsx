@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, Header, Text } from 'grommet';
+import { Box, Text, Heading } from 'grommet';
 import { useSelector } from 'react-redux';
 import {
   progressSelector,
@@ -16,13 +16,17 @@ const ScriptStep = ({ processId, stepIndex }) => {
   const hostName = useSelector(hostNameSelector(processId, step.payload.host));
 
   return (
-    <Box align="start">
-      <Header>{step.name}</Header>
-      <Header>{step.description}</Header>
-      <Header>{progress}</Header>
-      <Header>
-        Host: {hostName ?? 'Unset'} ({step.payload.host})
-      </Header>
+    <Box align="start" border="bottom">
+      <Heading level="4">{step.name}</Heading>
+      <Text>{step.description}</Text>
+      <Text>{progress}</Text>
+      <Box direction="row">
+        <Text weight="bold">
+          {step.payload.host}
+          {':\u00A0'}
+        </Text>{' '}
+        <Text>{hostName ?? 'Unset'}</Text>
+      </Box>
       {logEntities.map((logEntity) => (
         <Text size="xsmall" key={logEntity.timestamp}>
           {logEntity.log}
