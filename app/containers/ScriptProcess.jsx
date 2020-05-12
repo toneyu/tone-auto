@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Box, Nav, Anchor, Select, FormField, Button, Heading } from 'grommet';
 import { Play, Download, Close } from 'grommet-icons';
-import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -21,6 +20,7 @@ import {
   createProcessHostsByKeySelector,
 } from '../selectors/script-progress';
 import { connectionEndpointsSelector } from '../selectors/connections';
+import { saveAsCsv } from '../utils/save-as';
 
 const ScriptProcess = ({ processId }) => {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const ScriptProcess = ({ processId }) => {
                 endpoint: endpointsNameByKey[hostKeysByStepName[step.name]],
               })),
             );
-            saveAs(new File([data], `${scriptName}.csv`, { type: 'text/csv;charset=utf-8;' }));
+            saveAsCsv(scriptName, data);
           }}
         />
         {hostNames.map((hostName) => (
