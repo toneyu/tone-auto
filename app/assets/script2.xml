@@ -1,4 +1,4 @@
-<Script name="Script 2" apiVersion="4" automationXmlVersion="1">
+<Script name="Script 2 - Confirm Teams Meeting Connectivity" apiVersion="4" automationXmlVersion="1">
 
   <Hosts>
     <Host>Host A</Host>
