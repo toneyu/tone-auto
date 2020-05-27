@@ -61,7 +61,4 @@ const mapDispatchToProps = {
   loadHostsFilesRequest,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ConnectionPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionPage);
