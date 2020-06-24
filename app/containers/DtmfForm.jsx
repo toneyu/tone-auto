@@ -32,10 +32,10 @@ const DmtfForm = ({ host }) => {
           <TextInput
             placeholder="1XXXXXXXXXX#"
             value={dtmf}
-            onChange={({ target: { value } }) => setDtmf({ dtmf: value })}
+            onChange={({ target: { value } }) => setDtmf(value)}
           />
         </FormField>
-        <Button primary type="submit" label="Send DMTF" />
+        <Button primary type="submit" label="Send DTMF" />
       </Box>
     </Form>
   );

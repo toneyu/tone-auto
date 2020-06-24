@@ -258,6 +258,23 @@ const Connection = ({ host, password }) => {
                   putXmlRequest(
                     host,
                     `
+                <Command>
+                <Dial>
+                  <Number>234vmrdev@accenture.com</Number>
+                </Dial>
+              </Command>
+               `,
+                  ),
+                )
+              }
+              label="Dial 234vmrdev@accenture.com"
+            />
+            <Button
+              onClick={() =>
+                dispatch(
+                  putXmlRequest(
+                    host,
+                    `
         <Command>
           <Call>
             <Accept>1</Accept>

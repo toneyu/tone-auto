@@ -29,7 +29,7 @@ const DialForm = ({ host }) => {
           <TextInput
             placeholder="5XXXXX, 91XXX-XXX-XXXX"
             value={dial}
-            onChange={({ target: { value } }) => setDial({ dial: value })}
+            onChange={({ target: { value } }) => setDial(value)}
           />
         </FormField>
         <Button primary type="submit" label="Dial Number" />
