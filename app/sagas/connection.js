@@ -43,7 +43,9 @@ export function createFeedbackChannel(xapi, host, password, path) {
       .get(remainingPath)
       .then((data) => {
         emit('ready');
-        emit(data);
+        if (data !== undefined) {
+          emit(data);
+        }
         off = xapi.feedback.on(path, (data) => {
           emit(data);
         });

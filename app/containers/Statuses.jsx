@@ -35,6 +35,7 @@ const Statuses = ({ host }) => {
       />
       <FeedbackText label="Selfview mode" host={host} path="Status/Video/Selfview/Mode" />
       <FeedbackText label="Do not disturb" host={host} path="Status/Conference/DoNotDisturb" />
+      <FeedbackText label="Callid" host={host} path="Status/Conference/ActiveSpeaker" />
     </Box>
   );
 };

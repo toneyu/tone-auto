@@ -45,7 +45,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { push, command: commandRequest };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DialPage);
+export default connect(mapStateToProps, mapDispatchToProps)(DialPage);

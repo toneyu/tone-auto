@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Box } from 'grommet';
+import { Next, Down } from 'grommet-icons';
 import { downloadConfigurationRequest } from '../actions/xml-files';
 import { putXmlRequest } from '../actions/put-xml';
 import Spinner from '../components/Spinner';
@@ -10,10 +11,12 @@ import Statuses from './Statuses';
 import { connectRequest } from '../actions/connection';
 import DialForm from './DialForm';
 import DmtfForm from './DtmfForm';
+import ConfigurationDiff from './ConfigurationDiff';
 
 const Connection = ({ host, password }) => {
   const dispatch = useDispatch();
   const connectionStatus = useSelector(connectionStatusSelector(host));
+  const [configurationDiffOpen, setConfigurationDiffOpen] = useState(false);
 
   return (
     <Box align="start">
@@ -29,6 +32,14 @@ const Connection = ({ host, password }) => {
           <DmtfForm host={host} />
 
           <div>
+            <Button
+              icon={configurationDiffOpen ? <Down /> : <Next />}
+              onClick={() =>
+                setConfigurationDiffOpen((configurationDiffOpen) => !configurationDiffOpen)
+              }
+              label="Diff Configuration"
+            />
+            {configurationDiffOpen && <ConfigurationDiff host={host} />}
             <Button
               onClick={() => dispatch(downloadConfigurationRequest(host))}
               label="Download Configuration"
@@ -260,7 +271,7 @@ const Connection = ({ host, password }) => {
                     `
                 <Command>
                 <Dial>
-                  <Number>234vmrdev@accenture.com</Number>
+                  <Number>234@vmrdev.accenture.com</Number>
                 </Dial>
               </Command>
                `,
