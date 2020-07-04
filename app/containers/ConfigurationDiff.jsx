@@ -36,7 +36,13 @@ const ConfigurationDiff = ({ host }) => {
           input.click();
         }}
       >
-        <Button icon={<Upload />} type="submit" label="Select Configuration File" />
+        <Button
+          icon={<Upload />}
+          color="orange"
+          primary
+          type="submit"
+          label="Select Configuration File"
+        />
       </Form>
       <Box>
         <ReactDiffViewer
