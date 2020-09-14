@@ -37,12 +37,32 @@ const Connection = ({ host, password }) => {
               onClick={() =>
                 setConfigurationDiffOpen((configurationDiffOpen) => !configurationDiffOpen)
               }
-              label="Diff Configuration"
+              label="Compare Configuration"
             />
             {configurationDiffOpen && <ConfigurationDiff host={host} />}
             <Button
               onClick={() => dispatch(downloadConfigurationRequest(host))}
               label="Download Configuration"
+            />
+            <Button
+              onClick={() =>
+                dispatch(
+                  putXmlRequest(
+                    host,
+                    `
+        <Command>
+          <SystemUnit>
+            <SoftwareUpgrade>
+              <URL>
+              cmterm-s53200ce9_12_4-4aa097e0eb6.k3.cop.sgn
+              </URL>
+            </SoftwareUpgrade>
+          </SystemUnit>
+        </Command>`,
+                  ),
+                )
+              }
+              label="Install Upgrade"
             />
             <Button
               onClick={() =>
@@ -60,6 +80,24 @@ const Connection = ({ host, password }) => {
                 )
               }
               label="Disconnect Call"
+            />
+
+            <Button
+              onClick={() =>
+                dispatch(
+                  putXmlRequest(
+                    host,
+                    `
+        <Status>
+          <Call>
+            <AnswerState>
+            </AnswerState>
+          </Call>
+        </Status>`,
+                  ),
+                )
+              }
+              label="Call Status"
             />
             <Button
               onClick={() =>
