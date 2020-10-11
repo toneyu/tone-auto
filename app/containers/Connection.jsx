@@ -88,12 +88,13 @@ const Connection = ({ host, password }) => {
                   putXmlRequest(
                     host,
                     `
-        <Status>
-          <Call>
-            <AnswerState>
-            </AnswerState>
+        <Command>
+        <Call>
+          <Status>
+          Connected
+          </Status>
           </Call>
-        </Status>`,
+        </Command>`,
                   ),
                 )
               }
@@ -265,6 +266,25 @@ const Connection = ({ host, password }) => {
               }
               label="Dial 1"
             />
+
+            <Button
+              onClick={() =>
+                dispatch(
+                  putXmlRequest(
+                    host,
+                    `
+        <Command>
+          <Dial>
+            <Number>webcast39@vmr.vmrdev.accenture.com</Number>
+          </Dial>
+        </Command>
+               `,
+                  ),
+                )
+              }
+              label="webcast39@vmr.vmrdev.accenture.com"
+            />
+
             <Button
               onClick={() =>
                 dispatch(

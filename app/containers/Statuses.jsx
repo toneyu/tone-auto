@@ -35,7 +35,10 @@ const Statuses = ({ host }) => {
       /> */}
       <FeedbackText label="Selfview mode" host={host} path="Status/Video/Selfview/Mode" />
       <FeedbackText label="Do not disturb" host={host} path="Status/Conference/DoNotDisturb" />
-      <FeedbackText label="Callid" host={host} path="Status/Conference/ActiveSpeaker CallId" />
+      {/* <FeedbackText label="Callid" host={host} path="Status/Conference/ActiveSpeaker CallId" /> */}
+      {/* <FeedbackText label="Call Status" host={host} path="Status/Call/15" /> */}
+      <FeedbackText label="Call Status" host={host} path="Status/Call" />
+      {/* <FeedbackText label="Remote Input" host={host} path="Status/" /> */}
     </Box>
   );
 };
