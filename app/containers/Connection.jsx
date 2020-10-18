@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Box, Heading, Form } from 'grommet';
-import { Next, Down, Close, Upload } from 'grommet-icons';
-import { useMutation, useQuery } from 'react-query';
+import { Button, Box } from 'grommet';
+import { Next, Down } from 'grommet-icons';
 import { downloadConfigurationRequest } from '../actions/xml-files';
 import { putXmlRequest } from '../actions/put-xml';
 import Spinner from '../components/Spinner';
@@ -13,30 +12,12 @@ import { connectRequest } from '../actions/connection';
 import DialForm from './DialForm';
 import DmtfForm from './DtmfForm';
 import ConfigurationDiff from './ConfigurationDiff';
-
-const baseUrl = 'http://10.4.4.26:3000';
+import SoftwareUpgrade from './SoftwareUpgrade';
 
 const Connection = ({ host, password }) => {
   const dispatch = useDispatch();
   const connectionStatus = useSelector(connectionStatusSelector(host));
   const [configurationDiffOpen, setConfigurationDiffOpen] = useState(false);
-  const { data: packages, isLoading, error, refetch } = useQuery(`${host}-packages`, () =>
-    fetch(`${baseUrl}/packages`).then((res) => res.json()),
-  );
-  const [uploadPackage, { status }] = useMutation(async (files) => {
-    const formData = new FormData();
-    formData.append('file', files[0]);
-    await fetch(`${baseUrl}/upload`, {
-      method: 'POST',
-      body: formData,
-    });
-    await refetch();
-  });
-
-  const [deletePackage, { deleteStatus }] = useMutation(async (p) => {
-    await fetch(`${baseUrl}/deletepackage/${p}`, { method: 'DELETE' });
-    await refetch();
-  });
 
   return (
     <Box align="start">
@@ -52,37 +33,7 @@ const Connection = ({ host, password }) => {
           <DmtfForm host={host} />
 
           <div>
-            {!isLoading && !error && (
-              <Box>
-                {status === 'loading' ? 'Uploading' : 'Idle'}
-                {deleteStatus === 'loading' ? 'Deleting' : 'Idle'}
-                <Heading>Software Upgrade</Heading>
-                <Form
-                  onSubmit={() => {
-                    const input = document.createElement('input');
-                    input.type = 'file';
-                    // input.accept = '.pkg';
-                    input.onchange = (event) => {
-                      const files = Array.from(event.target.files);
-                      if (files) {
-                        uploadPackage(files);
-                      }
-                    };
-                    input.click();
-                  }}
-                >
-                  * <Button icon={<Upload />} type="submit" label="Upload package" />
-                </Form>
-                <Box align="center">
-                  {packages.map((p) => (
-                    <Box key={p} direction="row">
-                      <Button icon={<Close />} onClick={() => deletePackage(p)} />
-                      <Button label={p} />
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            )}
+            <SoftwareUpgrade host={host} />
             <Button
               icon={configurationDiffOpen ? <Down /> : <Next />}
               onClick={() =>
