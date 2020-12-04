@@ -42,7 +42,7 @@ const SoftwareUpgrade = ({ host }) => {
     <Command>
       <SystemUnit>
         <SoftwareUpgrade>
-          <URL>${url}</URL>
+           <URL>${url}</URL>
         </SoftwareUpgrade>
       </SystemUnit>
     </Command>`,

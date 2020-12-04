@@ -39,6 +39,7 @@ const Statuses = ({ host }) => {
       {/* <FeedbackText label="Call Status" host={host} path="Status/Call/15" /> */}
       <FeedbackText label="Call Status" host={host} path="Status/Call" />
       {/* <FeedbackText label="Remote Input" host={host} path="Status/" /> */}
+      {/* <FeedbackText label="Call Details" host={host} path="Call Details" /> */}
     </Box>
   );
 };
