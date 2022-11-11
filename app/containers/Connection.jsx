@@ -243,14 +243,14 @@ const Connection = ({ host, password }) => {
                     `
                 <Command>
                 <Dial>
-                  <Number>123@connect.accenture.com</Number>
+                  <Number>123</Number>
                 </Dial>
               </Command>
                `,
                   ),
                 )
               }
-              label="Dial 123@connect.accenture.com"
+              label="Dial 123"
             />
             <Button
               onClick={() =>
